@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Bungee&display=swap');
+
+:root {
+  --bg: #06090f;
+  --bg-secondary: rgba(15, 25, 45, 0.9);
+  --panel: rgba(16, 26, 48, 0.75);
+  --panel-border: rgba(96, 140, 255, 0.2);
+  --text: #f5f7ff;
+  --muted: #a7b3d1;
+  --accent: #82f5c2;
+  --accent-strong: #44ffd8;
+  --syntax-bg: #0f182c;
+  --syntax-border: rgba(130, 245, 194, 0.2);
+}
+
+h1{
+  font-family: 'Bungee', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: var(--accent);
+}
