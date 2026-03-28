@@ -337,6 +337,8 @@
       object-fit: cover;
       display: block;
       transition: transform 0.4s ease;
+      position: relative;
+      z-index: 0;
     }
 
     .card:hover .card-image img {
@@ -356,13 +358,14 @@
         transparent 100%
       );
       pointer-events: none;
+      z-index: 1;
     }
 
     /* ── Overlay content — sits above gradient ── */
     .card-body {
       position: absolute;
       inset: 0;
-      z-index: 1;
+      z-index: 2;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
@@ -450,7 +453,7 @@
       gap: 5px;
       max-width: 85%;
       pointer-events: none;
-      z-index: 1;
+      z-index: 3;
     }
 
     .tag {
@@ -553,7 +556,60 @@
     @media (max-width: 480px) {
       header { padding: 40px 20px 32px; }
       .feed { padding: 0 16px 80px; gap: 18px; }
-      .card-body { padding: 20px 20px 22px; }
+
+      .card-image {
+        --mobile-image-min-h: clamp(220px, 62vw, 300px);
+        aspect-ratio: auto;
+        min-height: var(--mobile-image-min-h);
+      }
+
+      .card-image img {
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: var(--mobile-image-min-h);
+      }
+
+      .card-image::after {
+        inset: 0 0 auto 0;
+        height: var(--mobile-image-min-h);
+        background: linear-gradient(
+          to bottom,
+          rgba(10,11,14,0.00) 0%,
+          rgba(10,11,14,0.00) 58%,
+          rgba(10,11,14,0.28) 72%,
+          rgba(10,11,14,0.64) 86%,
+          rgba(10,11,14,0.84) 100%
+        );
+      }
+
+      .card-body {
+        position: relative;
+        inset: auto;
+        z-index: 2;
+        justify-content: flex-start;
+        min-height: var(--mobile-image-min-h);
+        padding: calc(var(--mobile-image-min-h) * 0.58) 20px 64px;
+        background: linear-gradient(
+          to bottom,
+          rgba(10,11,14,0) 0%,
+          rgba(10,11,14,0.56) 26%,
+          rgba(10,11,14,0.9) 58%,
+          rgba(10,11,14,0.96) 100%
+        );
+      }
+
+      .card-tags {
+        bottom: 12px;
+        right: 12px;
+        max-width: calc(100% - 24px);
+      }
+
+      .card-blurb {
+        display: block;
+        -webkit-line-clamp: unset;
+        -webkit-box-orient: unset;
+        overflow: visible;
+      }
       footer { padding-bottom: 48px; }
     }
   </style>
