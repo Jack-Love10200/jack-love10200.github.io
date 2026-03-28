@@ -323,6 +323,11 @@
       transform: translateY(-3px);
     }
 
+    .card:focus-visible {
+      outline: 2px solid var(--card-accent);
+      outline-offset: 3px;
+    }
+
     .card-red {
       --card-accent: var(--red);
       --card-accent-rgb: 232,57,42;
@@ -685,9 +690,9 @@
 
     <div class="nav-links">
       <a href="#" class="active">Projects</a>
-      <a href="#">About</a>
-      <a href="#">Writing</a>
-      <a href="#">Contact</a>
+      <a href="about.html">About</a>
+      <a href="coming-soon.html">Writing</a>
+      <a href="contact.html">Contact</a>
     </div>
 
     <div class="nav-icons">
@@ -722,15 +727,15 @@
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
       Projects
     </a>
-    <a href="#">
+    <a href="about.html">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
       About
     </a>
-    <a href="#">
+    <a href="coming-soon.html">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h10M4 18h12"/></svg>
       Writing
     </a>
-    <a href="#">
+    <a href="contact.html">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
       Contact
     </a>
@@ -760,7 +765,7 @@
   <main class="feed">
 
     <!-- Card 1 -->
-    <article class="card card-red">
+    <article class="card card-red" role="link" tabindex="0" data-href="coming-soon.html" data-target="_blank" aria-label="Open HYPERFIST project page">
       <div class="card-image">
         <img src="Images/hyperfist_key2_logo.png" alt="HYPERFIST key art" loading="lazy" />
         <div class="card-body">
@@ -794,7 +799,7 @@
     </article>
 
     <!-- Card 2 -->
-    <article class="card card-blue">
+    <article class="card card-blue" role="link" tabindex="0" data-href="coming-soon.html" data-target="_blank" aria-label="Open NITE LITE project page">
       <div class="card-image">
         <img src="Images/NiteLiteLogo_Wallpaper.avif" alt="NITE LITE logo" loading="lazy" />
         <div class="card-body">
@@ -828,7 +833,7 @@
     </article>
 
     <!-- Card 3 -->
-    <article class="card card-red">
+    <article class="card card-red" role="link" tabindex="0" data-href="coming-soon.html" data-target="_blank" aria-label="Open KnightLight project page">
       <div class="card-image">
         <img src="Images/KLGameplay.jpg" alt="KnightLight gameplay" loading="lazy" />
         <div class="card-body">
@@ -861,7 +866,7 @@
     </article>
 
     <!-- Card 4 -->
-    <article class="card card-blue">
+    <article class="card card-blue" role="link" tabindex="0" data-href="coming-soon.html" data-target="_blank" aria-label="Open Combat Cat project page">
       <div class="card-image">
         <img src="Images/CCGameplay.jpg" alt="Combat Cat gameplay" loading="lazy" />
         <div class="card-body">
@@ -918,6 +923,32 @@
         });
       });
     }
+
+    // Make each project card behave like a link while preserving nested link behavior.
+    document.querySelectorAll('.card[data-href]').forEach((card) => {
+      const navigate = () => {
+        const href = card.dataset.href;
+        if (!href) return;
+        const target = card.dataset.target || '_self';
+        if (target === '_blank') {
+          window.open(href, '_blank', 'noopener');
+        } else {
+          window.location.href = href;
+        }
+      };
+
+      card.addEventListener('click', (event) => {
+        if (event.target.closest('a, button')) return;
+        navigate();
+      });
+
+      card.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          navigate();
+        }
+      });
+    });
   </script>
 </body>
 </html>
