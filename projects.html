@@ -292,6 +292,8 @@
 
     /* ── Card ── */
     .card {
+      --card-accent: var(--red);
+      --card-accent-rgb: 232,57,42;
       background: var(--surface);
       border-radius: var(--radius);
       overflow: hidden;
@@ -321,23 +323,36 @@
       transform: translateY(-3px);
     }
 
+    .card-red {
+      --card-accent: var(--red);
+      --card-accent-rgb: 232,57,42;
+    }
+
+    .card-blue {
+      --card-accent: #6b9fff;
+      --card-accent-rgb: 107,159,255;
+    }
+
     /* ── Image ── */
     .card-image {
+      --image-h: clamp(240px, 34vw, 420px);
       width: 100%;
-      aspect-ratio: 16 / 9;
+      aspect-ratio: auto;
+      min-height: var(--image-h);
       overflow: hidden;
       position: relative;
-      background: var(--tag-bg);
+      background: #000;
       display: block;
     }
 
     .card-image img {
       width: 100%;
-      height: 100%;
+      height: var(--image-h);
       object-fit: cover;
       display: block;
       transition: transform 0.4s ease;
-      position: relative;
+      position: absolute;
+      inset: 0 0 auto 0;
       z-index: 0;
     }
 
@@ -349,12 +364,13 @@
     .card-image::after {
       content: '';
       position: absolute;
-      inset: 0;
+      inset: 0 0 auto 0;
+      height: var(--image-h);
       background: linear-gradient(
         to top,
-        rgba(10,11,14,0.97) 0%,
-        rgba(10,11,14,0.82) 38%,
-        rgba(10,11,14,0.25) 65%,
+        rgba(0,0,0,1) 0%,
+        rgba(10,11,14,0.34) 30%,
+        rgba(10,11,14,0.10) 52%,
         transparent 100%
       );
       pointer-events: none;
@@ -363,13 +379,22 @@
 
     /* ── Overlay content — sits above gradient ── */
     .card-body {
-      position: absolute;
-      inset: 0;
+      position: relative;
+      inset: auto;
       z-index: 2;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
-      padding: 18px 20px 14px;
+      justify-content: flex-start;
+      min-height: var(--image-h);
+      padding: calc(var(--image-h) * 0.8) 20px 14px;
+      background-color: #000;
+      background: linear-gradient(
+        to bottom,
+        rgba(10,11,14,0.00) 0%,
+        rgba(10,11,14,0.00) calc((var(--image-h) * 0.8) - 8px),
+        rgba(10,11,14,0.42) calc((var(--image-h) * 0.8) + 8px),
+        rgba(0,0,0,1) 100%
+      );
       pointer-events: none;
     }
 
@@ -411,7 +436,7 @@
       font-weight: 500;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: var(--accent);
+      color: var(--card-accent);
     }
 
     .card-title {
@@ -426,7 +451,11 @@
     }
 
     .card-title rd {
-      color: var(--red);
+      color: var(--card-accent);
+    }
+
+    .card-title bl {
+      color: var(--card-accent);
     }
 
     .card-blurb {
@@ -435,25 +464,27 @@
       color: rgba(240,241,244,0.78);
       font-weight: 300;
       margin-bottom: 12px;
-      /* clamp to 3 lines */
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+      display: block;
+      overflow: visible;
     }
 
-    /* ── Tags — overlaid on image, bottom-right ── */
+    /* ── Card footer and tags ── */
+    .card-footer {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 10px;
+      pointer-events: auto;
+    }
+
     .card-tags {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
       display: flex;
       flex-wrap: wrap;
-      justify-content: flex-end;
+      justify-content: flex-start;
       gap: 5px;
-      max-width: 85%;
-      pointer-events: none;
-      z-index: 3;
+      width: 100%;
+      pointer-events: auto;
     }
 
     .tag {
@@ -482,8 +513,8 @@
 
     /* Link tags — clickable, with subtle glow */
     a.tag:hover {
-      background: rgba(45,110,245,0.35);
-      border-color: rgba(107,159,255,0.5);
+      background: rgba(var(--card-accent-rgb),0.35);
+      border-color: rgba(var(--card-accent-rgb),0.5);
       color: #fff;
     }
 
@@ -494,14 +525,8 @@
     }
 
     .tag.featured {
-      background: rgba(232,57,42,0.75);
-      border-color: rgba(232,57,42,0.5);
-      color: #fff;
-    }
-
-    .tag.featured-blue {
-      background: rgba(45,110,245,0.75);
-      border-color: rgba(45,110,245,0.5);
+      background: rgba(var(--card-accent-rgb),0.75);
+      border-color: rgba(var(--card-accent-rgb),0.5);
       color: #fff;
     }
 
@@ -530,12 +555,9 @@
     }
 
     .card-link:hover {
-      color: #fff;
-      border-color: rgba(255,255,255,0.4);
+      color: var(--card-accent);
+      border-color: var(--card-accent);
     }
-
-    .card-red .card-link:hover { color: var(--red); border-color: var(--red); }
-    .card-blue .card-link:hover { color: #6b9fff; border-color: #6b9fff; }
 
     .card-link svg {
       transition: transform 0.2s ease;
@@ -553,32 +575,35 @@
       font-size: 13px;
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 680px) {
+      :root {
+        --image-h: clamp(220px, 56vw, 320px);
+        --mobile-anchor-ratio: 0.8;
+      }
+
       header { padding: 40px 20px 32px; }
       .feed { padding: 0 16px 80px; gap: 18px; }
 
       .card-image {
-        --mobile-image-min-h: clamp(220px, 62vw, 300px);
         aspect-ratio: auto;
-        min-height: var(--mobile-image-min-h);
+        min-height: var(--image-h);
       }
 
       .card-image img {
         position: absolute;
         inset: 0 0 auto 0;
-        height: var(--mobile-image-min-h);
+        height: var(--image-h);
       }
 
       .card-image::after {
         inset: 0 0 auto 0;
-        height: var(--mobile-image-min-h);
+        height: var(--image-h);
         background: linear-gradient(
-          to bottom,
-          rgba(10,11,14,0.00) 0%,
-          rgba(10,11,14,0.00) 58%,
-          rgba(10,11,14,0.28) 72%,
-          rgba(10,11,14,0.64) 86%,
-          rgba(10,11,14,0.84) 100%
+          to top,
+          rgba(0,0,0,1) 0%,
+          rgba(10,11,14,0.24) 30%,
+          rgba(10,11,14,0.08) 50%,
+          rgba(10,11,14,0.00) 58%
         );
       }
 
@@ -587,30 +612,68 @@
         inset: auto;
         z-index: 2;
         justify-content: flex-start;
-        min-height: var(--mobile-image-min-h);
-        padding: calc(var(--mobile-image-min-h) * 0.58) 20px 64px;
+        min-height: var(--image-h);
+        padding: calc(var(--image-h) * var(--mobile-anchor-ratio)) 20px 18px;
+        background-color: #000;
         background: linear-gradient(
           to bottom,
-          rgba(10,11,14,0) 0%,
-          rgba(10,11,14,0.56) 26%,
-          rgba(10,11,14,0.9) 58%,
-          rgba(10,11,14,0.96) 100%
-        );
+          rgba(10,11,14,0.00) 0%,
+          rgba(10,11,14,0.00) calc((var(--image-h) * var(--mobile-anchor-ratio)) - 8px),
+          rgba(10,11,14,0.45) calc((var(--image-h) * var(--mobile-anchor-ratio)) + 8px),
+          rgba(0,0,0,1) 100%
+        ) !important;
       }
 
-      .card-tags {
-        bottom: 12px;
-        right: 12px;
-        max-width: calc(100% - 24px);
+      .card-footer {
+        margin-top: 8px;
       }
 
       .card-blurb {
-        display: block;
-        -webkit-line-clamp: unset;
-        -webkit-box-orient: unset;
-        overflow: visible;
+        margin-bottom: 12px;
       }
       footer { padding-bottom: 48px; }
+    }
+
+    @media (max-width: 560px) {
+      :root {
+        --image-h: clamp(230px, 72vw, 340px);
+        --mobile-anchor-ratio: 0.8;
+      }
+
+      .card-title {
+        font-size: clamp(1rem, 4.8vw, 1.2rem);
+      }
+
+      .card-body {
+        padding: calc(var(--image-h) * var(--mobile-anchor-ratio)) 16px 14px;
+      }
+
+      .card-blurb {
+        margin-bottom: 8px;
+        display: block;
+        overflow: visible;
+      }
+
+      .card-footer {
+        gap: 8px;
+        margin-top: 8px;
+      }
+
+      .card-tags {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+
+      .card-tags::-webkit-scrollbar { display: none; }
+
+      .tag {
+        height: 22px;
+        padding: 0 8px;
+        font-size: 10px;
+      }
     }
   </style>
 </head>
@@ -618,7 +681,7 @@
 
   <!-- ── Sticky Navbar ── -->
   <nav class="navbar">
-    <a class="nav-name" href="#">J<w>M</w><span>L</span></a>
+    <a class="nav-name" href="#">Jack <w>M </w><span>Love</span></a>
 
     <div class="nav-links">
       <a href="#" class="active">Projects</a>
@@ -672,15 +735,15 @@
       Contact
     </a>
     <div class="nav-drawer-divider"></div>
-    <a href="https://linkedin.com/in/yourhandle" target="_blank" rel="noopener">
+    <a href="https://linkedin.com/in/jack-m-love" target="_blank" rel="noopener">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.37V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.35-1.85 3.58 0 4.24 2.36 4.24 5.43v6.31zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.78 13.02H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.46C23.2 24 24 23.23 24 22.27V1.73C24 .77 23.2 0 22.23 0z"/></svg>
       LinkedIn
     </a>
-    <a href="https://github.com/yourhandle" target="_blank" rel="noopener">
+    <a href="https://github.com/Jack-Love10200" target="_blank" rel="noopener">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3A12 12 0 0 0 0 12.3c0 5.27 3.44 9.74 8.2 11.32.6.1.82-.26.82-.58v-2.04c-3.34.72-4.04-1.6-4.04-1.6-.54-1.38-1.33-1.74-1.33-1.74-1.08-.74.08-.73.08-.73 1.2.09 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.48 1 .1-.77.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.23-3.22-.13-.3-.53-1.52.12-3.17 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02.005 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.65 1.65.25 2.87.12 3.17.77.84 1.23 1.9 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 24 12.3 12 12 0 0 0 12 .3z"/></svg>
       GitHub
     </a>
-    <a href="/cdn-cgi/l/email-protection#d9a0b6ac99bca1b8b4a9b5bcf7bab6b4">
+    <a href="mailto:j.m.love1560@gmail.com" title="Email">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
       Email me
     </a>
@@ -697,19 +760,9 @@
   <main class="feed">
 
     <!-- Card 1 -->
-    <a class="card card-red" href="#">
+    <article class="card card-red">
       <div class="card-image">
         <img src="Images/hyperfist_key2_logo.png" alt="HYPERFIST key art" loading="lazy" />
-        <div class="card-tags">
-          <span class="tag featured">Unreal 5</span>
-          <span class="tag">20+ Person Team</span>
-          <span class="tag">HLSL</span>
-          <span class="tag">Steam Deck</span>
-          <a class="tag steam" href="https://store.steampowered.com/app/3689210/HYPERFIST/" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-            <svg class="tag-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.492 1.009 2.447-.397.957-1.494 1.41-2.455 1.02zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.253 0-2.265-1.014-2.265-2.265z"/></svg>
-            Steam
-          </a>
-        </div>
         <div class="card-body">
           <div class="card-meta">
             <span class="card-year">2026</span>
@@ -718,92 +771,99 @@
           </div>
           <h2 class="card-title"><rd>HYPERFIST - Graphics & Gameplay Programmer</rd></h2>
           <p class="card-blurb">A fast-paced first person beat-em-up and my first foray into Unreal Engine 5. My role involved improving game feel with flashy shaders and post-process effects, integrating steam features like achievements and leaderboards, and helping integrate challenge mode features.</p>
-          <span class="card-link">
-            View project
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
+          <div class="card-footer">
+            <span class="card-link">
+              View project
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <div class="card-tags">
+              <span class="tag featured">Unreal 5</span>
+              <span class="tag">20+ Person Team</span>
+              <span class="tag">HLSL</span>
+              <span class="tag">Steam Deck</span>
+              <a class="tag steam" href="https://store.steampowered.com/app/3689210/HYPERFIST/" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                <svg class="tag-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.492 1.009 2.447-.397.957-1.494 1.41-2.455 1.02zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.253 0-2.265-1.014-2.265-2.265z"/></svg>
+                Steam
+              </a>
+            </div>
+          </div>
         </div>
       </div>
-    </a>
+    </article>
 
     <!-- Card 2 -->
-    <a class="card card-blue" href="#">
+    <article class="card card-blue">
       <div class="card-image">
         <img src="Images/NiteLiteLogo_Wallpaper.avif" alt="NITE LITE logo" loading="lazy" />
-        <div class="card-tags">
-          <span class="tag featured-blue">Custom Engine</span>
-          <span class="tag">9 Person Team</span>
-          <span class="tag">C++</span>
-          <span class="tag">C#</span>
-          <a class="tag" href="https://ec-ww.github.io/NiteLiteSite/" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-            <svg class="tag-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3A12 12 0 0 0 0 12.3c0 5.27 3.44 9.74 8.2 11.32.6.1.82-.26.82-.58v-2.04c-3.34.72-4.04-1.6-4.04-1.6-.54-1.38-1.33-1.74-1.33-1.74-1.08-.74.08-.73.08-.73 1.2.09 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.48 1 .1-.77.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.23-3.22-.13-.3-.53-1.52.12-3.17 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02.005 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.65 1.65.25 2.87.12 3.17.77.84 1.23 1.9 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 24 12.3 12 12 0 0 0 12 .3z"/></svg>
-            GitHub
-          </a>
-        </div>
         <div class="card-body">
           <div class="card-meta">
             <span class="card-year">2025</span>
             <span class="card-dot"></span>
             <span class="card-category">Custom C++ Engine</span>
           </div>
-          <h2 class="card-title">NITE LITE - Scripting Engineer</h2>
+          <h2 class="card-title"><bl>NITE LITE - Scripting Engineer</bl></h2>
           <p class="card-blurb">NITE LITE's scripting engine has a full custom unity-like C# scripting system with everything you would expect from a GameObject and a custom event system.</p>
-          <span class="card-link">
-            View project
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
+          <div class="card-footer">
+            <span class="card-link">
+              View project
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <div class="card-tags">
+              <span class="tag featured">Custom Engine</span>
+              <span class="tag">9 Person Team</span>
+              <span class="tag">C++</span>
+              <span class="tag">C#</span>
+              <a class="tag" href="https://ec-ww.github.io/NiteLiteSite/" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                <svg class="tag-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3A12 12 0 0 0 0 12.3c0 5.27 3.44 9.74 8.2 11.32.6.1.82-.26.82-.58v-2.04c-3.34.72-4.04-1.6-4.04-1.6-.54-1.38-1.33-1.74-1.33-1.74-1.08-.74.08-.73.08-.73 1.2.09 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.48 1 .1-.77.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.23-3.22-.13-.3-.53-1.52.12-3.17 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02.005 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.65 1.65.25 2.87.12 3.17.77.84 1.23 1.9 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 24 12.3 12 12 0 0 0 12 .3z"/></svg>
+                GitHub
+              </a>
+            </div>
+          </div>
         </div>
       </div>
-    </a>
+    </article>
 
     <!-- Card 3 -->
-    <a class="card card-red" href="#">
+    <article class="card card-red">
       <div class="card-image">
         <img src="Images/KLGameplay.jpg" alt="KnightLight gameplay" loading="lazy" />
-        <div class="card-tags">
-          <span class="tag featured">C++</span>
-          <span class="tag">Custom Engine</span>
-          <span class="tag">2D Platformer</span>
-          <a class="tag" href="https://store.steampowered.com/app/3086850/KnightLight/" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-            <svg class="tag-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.492 1.009 2.447-.397.957-1.494 1.41-2.455 1.02zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.253 0-2.265-1.014-2.265-2.265z"/></svg>
-            Steam
-          </a>
-        </div>
         <div class="card-body">
           <div class="card-meta">
             <span class="card-year">2024</span>
             <span class="card-dot"></span>
             <span class="card-category">C++ Written Game</span>
           </div>
-          <h2 class="card-title">KnightLight - Tools & Gameplay Programmer</h2>
+          <h2 class="card-title"><rd>KnightLight - Tools & Gameplay Programmer</rd></h2>
           <p class="card-blurb">KnightLight is a 2D puzzle-platformer where I did a fair amount of engine/tools work, including implementing systems for sound, animation, particles, and an immediate-mode scripting interface. Once these systems were in place, I moved to helping our team's designers work on gameplay code.</p>
-          <span class="card-link">
-            View project
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
+          <div class="card-footer">
+            <span class="card-link">
+              View project
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <div class="card-tags">
+              <span class="tag featured">C++</span>
+              <span class="tag">Custom Engine</span>
+              <span class="tag">2D Platformer</span>
+              <a class="tag" href="https://store.steampowered.com/app/3086850/KnightLight/" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                <svg class="tag-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.492 1.009 2.447-.397.957-1.494 1.41-2.455 1.02zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.253 0-2.265-1.014-2.265-2.265z"/></svg>
+                Steam
+              </a>
+            </div>
+          </div>
         </div>
       </div>
-    </a>
+    </article>
 
     <!-- Card 4 -->
-    <a class="card card-blue" href="#">
+    <article class="card card-blue">
       <div class="card-image">
         <img src="Images/CCGameplay.jpg" alt="Combat Cat gameplay" loading="lazy" />
-        <div class="card-tags">
-          <span class="tag featured-blue">Boss Design</span>
-          <span class="tag">C</span>
-          <span class="tag">2D Shooter</span>
-          <a class="tag" href="https://store.steampowered.com/app/2925730/Combat_Cat/" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-            <svg class="tag-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.492 1.009 2.447-.397.957-1.494 1.41-2.455 1.02zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.253 0-2.265-1.014-2.265-2.265z"/></svg>
-            Steam
-          </a>
-        </div>
         <div class="card-body">
           <div class="card-meta">
             <span class="card-year">2023</span>
@@ -812,15 +872,26 @@
           </div>
           <h2 class="card-title">Combat Cat - Gameplay Programmer</h2>
           <p class="card-blurb">2 of the 3 Bosses in this 2D shooter were implemented by me, as well as a C-style serialization system and enemy wave manager.</p>
-          <span class="card-link">
-            View project
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
+          <div class="card-footer">
+            <span class="card-link">
+              View project
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <div class="card-tags">
+              <span class="tag featured">Boss Design</span>
+              <span class="tag">C</span>
+              <span class="tag">2D Shooter</span>
+              <a class="tag" href="https://store.steampowered.com/app/2925730/Combat_Cat/" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                <svg class="tag-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.492 1.009 2.447-.397.957-1.494 1.41-2.455 1.02zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.253 0-2.265-1.014-2.265-2.265z"/></svg>
+                Steam
+              </a>
+            </div>
+          </div>
         </div>
       </div>
-    </a>
+    </article>
 
   </main>
 
@@ -828,17 +899,25 @@
     Jack Love
   </footer>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+  <script>
     const btn = document.getElementById('hamburger');
     const drawer = document.getElementById('drawer');
-    btn.addEventListener('click', () => {
-      const open = drawer.classList.toggle('open');
-      btn.classList.toggle('open', open);
-    });
-    // Close drawer when a link is tapped
-    drawer.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        drawer.classList.remove('open');
-        btn.classList.remove('open');
+
+    if (btn && drawer) {
+      btn.addEventListener('click', () => {
+        const open = drawer.classList.toggle('open');
+        btn.classList.toggle('open', open);
       });
-    });
+
+      // Close drawer when a link is tapped
+      drawer.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', () => {
+          drawer.classList.remove('open');
+          btn.classList.remove('open');
+        });
+      });
+    }
+  </script>
+</body>
+</html>
