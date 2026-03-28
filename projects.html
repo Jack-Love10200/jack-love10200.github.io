@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="Images/favicon.png">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0e0f11;
+      --surface: #16181c;
+      --surface-2: #1e2027;
+      --ink: #f0f1f4;
+      --ink-muted: #7a7f8e;
+      --red: #e8392a;
+      --red-dim: rgba(232,57,42,0.12);
+      --blue: #2d6ef5;
+      --blue-dim: rgba(45,110,245,0.12);
+      --accent: var(--red);
+      --accent-light: var(--red-dim);
+      --border: rgba(255,255,255,0.07);
+      --tag-bg: rgba(255,255,255,0.06);
+      --tag-ink: #9ba3b5;
+      --radius: 16px;
+      --shadow: 0 2px 12px rgba(0,0,0,0.4), 0 1px 3px rgba(0,0,0,0.3);
+      --shadow-hover: 0 16px 48px rgba(0,0,0,0.6), 0 4px 16px rgba(0,0,0,0.4);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      padding-top: 72px; /* navbar height */
+    }
+
+    /* ── Navbar ── */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      padding: 0 28px;
+      background: rgba(14,15,17,0.82);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Name — left */
+    .nav-name {
+      font-family: 'Instrument Serif', serif;
+      font-size: 2.3rem;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      color: var(--blue);
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .nav-name span {
+      color: var(--red);
+    }
+
+    .nav-name w {
+      color: var(--ink);
+    }
+
+    /* Page links — center */
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-muted);
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      transition: color 0.15s, background 0.15s;
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--ink);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .nav-links a.active {
+      color: var(--red);
+    }
+
+    /* Icon links — right */
+    .nav-icons {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .nav-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      color: var(--ink-muted);
+      text-decoration: none;
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .nav-icon:hover { color: var(--ink); background: rgba(255,255,255,0.06); }
+
+    .nav-resume {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      height: 32px;
+      padding: 0 13px;
+      border-radius: 8px;
+      border: 1px solid rgba(232,57,42,0.45);
+      color: var(--red);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      text-decoration: none;
+      transition: background 0.15s, border-color 0.15s;
+      margin-left: 6px;
+      white-space: nowrap;
+    }
+
+    .nav-resume:hover {
+      background: var(--red-dim);
+      border-color: var(--red);
+    }
+
+    /* ── Mobile hamburger ── */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 34px;
+      height: 34px;
+      padding: 8px;
+      border-radius: 8px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    .nav-hamburger span {
+      display: block;
+      height: 1.5px;
+      background: var(--ink-muted);
+      border-radius: 2px;
+      transition: transform 0.2s ease, opacity 0.2s ease, width 0.2s ease;
+      transform-origin: center;
+    }
+
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* Mobile drawer */
+    .nav-drawer {
+      display: none;
+      position: fixed;
+      top: 72px; left: 0; right: 0;
+      z-index: 99;
+      background: rgba(14,15,17,0.97);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 20px 24px;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .nav-drawer.open { display: flex; }
+
+    .nav-drawer a {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--ink-muted);
+      text-decoration: none;
+      padding: 10px 12px;
+      border-radius: 8px;
+      transition: color 0.15s, background 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-drawer a:hover, .nav-drawer a.active { color: var(--ink); background: rgba(255,255,255,0.05); }
+    .nav-drawer a.active { color: var(--red); }
+
+    .nav-drawer-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 8px 0;
+    }
+
+    .nav-drawer-resume {
+      margin-top: 4px;
+      border: 1px solid rgba(232,57,42,0.45) !important;
+      color: var(--red) !important;
+      justify-content: center;
+    }
+
+    .nav-drawer-resume:hover {
+      background: var(--red-dim) !important;
+    }
+
+    @media (max-width: 680px) {
+      .nav-links { display: none; }
+      .nav-icons { display: none; }
+      .nav-resume { display: none; }
+      .nav-hamburger { display: flex; }
+    }
+
+    /* ── Header ── */
+    header {
+      padding: 48px 24px 36px;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .header-eyebrow {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    header h1 {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(2.4rem, 7vw, 3.6rem);
+      line-height: 1.1;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+
+    header h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    header p {
+      margin-top: 16px;
+      font-size: 18px;
+      line-height: 1.65;
+      color: var(--ink);
+      font-weight: 300;
+      max-width: 460px;
+    }
+
+    /* ── Feed ── */
+    .feed {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 24px 100px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      transition: box-shadow 0.25s ease, transform 0.25s ease;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      animation: rise 0.5s ease both;
+    }
+
+    .card:nth-child(1) { animation-delay: 0.05s; }
+    .card:nth-child(2) { animation-delay: 0.10s; }
+    .card:nth-child(3) { animation-delay: 0.15s; }
+    .card:nth-child(4) { animation-delay: 0.20s; }
+    .card:nth-child(5) { animation-delay: 0.25s; }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-hover), 0 0 0 1px rgba(255,255,255,0.08);
+      transform: translateY(-3px);
+    }
+
+    /* ── Image ── */
+    .card-image {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      position: relative;
+      background: var(--tag-bg);
+      display: block;
+    }
+
+    .card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .card:hover .card-image img {
+      transform: scale(1.03);
+    }
+
+    /* Full-card gradient: dark at bottom for text, subtle at top */
+    .card-image::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(10,11,14,0.97) 0%,
+        rgba(10,11,14,0.82) 38%,
+        rgba(10,11,14,0.25) 65%,
+        transparent 100%
+      );
+      pointer-events: none;
+    }
+
+    /* ── Overlay content — sits above gradient ── */
+    .card-body {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 18px 20px 14px;
+      pointer-events: none;
+    }
+
+    /* Placeholder for cards without images */
+    .card-image-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 56px;
+      background: linear-gradient(135deg, #1e2027 0%, #13151a 100%);
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .card-year {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(240,241,244,0.55);
+    }
+
+    .card-dot {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+    }
+
+    .card-category {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .card-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(1.15rem, 3.5vw, 1.45rem);
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      margin-bottom: 7px;
+      color: #fff;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+    }
+
+    .card-title rd {
+      color: var(--red);
+    }
+
+    .card-blurb {
+      font-size: 13px;
+      line-height: 1.6;
+      color: rgba(240,241,244,0.78);
+      font-weight: 300;
+      margin-bottom: 12px;
+      /* clamp to 3 lines */
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* ── Tags — overlaid on image, bottom-right ── */
+    .card-tags {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 5px;
+      max-width: 85%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      height: 24px;
+      padding: 0 9px;
+      border-radius: 100px;
+      background: rgba(14,15,17,0.72);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #c8cdd8;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      pointer-events: auto;
+      text-decoration: none;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    /* Plain (non-link) tags — no hover cursor */
+    span.tag { cursor: default; }
+
+    /* Link tags — clickable, with subtle glow */
+    a.tag:hover {
+      background: rgba(45,110,245,0.35);
+      border-color: rgba(107,159,255,0.5);
+      color: #fff;
+    }
+
+    a.tag.steam:hover {
+      background: rgba(27,40,56,0.85);
+      border-color: rgba(100,180,255,0.5);
+      color: #c6d4df;
+    }
+
+    .tag.featured {
+      background: rgba(232,57,42,0.75);
+      border-color: rgba(232,57,42,0.5);
+      color: #fff;
+    }
+
+    .tag.featured-blue {
+      background: rgba(45,110,245,0.75);
+      border-color: rgba(45,110,245,0.5);
+      color: #fff;
+    }
+
+    /* Steam icon inside tag */
+    .tag .tag-icon {
+      width: 11px;
+      height: 11px;
+      flex-shrink: 0;
+      opacity: 0.85;
+    }
+
+    /* ── Card footer link ── */
+    .card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(240,241,244,0.6);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: color 0.15s ease, border-color 0.15s ease;
+      padding-bottom: 1px;
+      pointer-events: auto;
+      width: fit-content;
+    }
+
+    .card-link:hover {
+      color: #fff;
+      border-color: rgba(255,255,255,0.4);
+    }
+
+    .card-red .card-link:hover { color: var(--red); border-color: var(--red); }
+    .card-blue .card-link:hover { color: #6b9fff; border-color: #6b9fff; }
+
+    .card-link svg {
+      transition: transform 0.2s ease;
+    }
+
+    .card-link:hover svg {
+      transform: translateX(3px);
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 0 24px 60px;
+      color: var(--ink-muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 480px) {
+      header { padding: 40px 20px 32px; }
+      .feed { padding: 0 16px 80px; gap: 18px; }
+      .card-body { padding: 20px 20px 22px; }
+      footer { padding-bottom: 48px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Sticky Navbar ── -->
+  <nav class="navbar">
+    <a class="nav-name" href="#">J<w>M</w><span>L</span></a>
+
+    <div class="nav-links">
+      <a href="#" class="active">Projects</a>
+      <a href="#">About</a>
+      <a href="#">Writing</a>
+      <a href="#">Contact</a>
+    </div>
+
+    <div class="nav-icons">
+      <!-- LinkedIn -->
+      <a class="nav-icon" href="https://linkedin.com/in/jack-m-love" target="_blank" rel="noopener" title="LinkedIn">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.37V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.35-1.85 3.58 0 4.24 2.36 4.24 5.43v6.31zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.78 13.02H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.46C23.2 24 24 23.23 24 22.27V1.73C24 .77 23.2 0 22.23 0z"/></svg>
+      </a>
+      <!-- GitHub -->
+      <a class="nav-icon" href="https://github.com/Jack-Love10200" target="_blank" rel="noopener" title="GitHub">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3A12 12 0 0 0 0 12.3c0 5.27 3.44 9.74 8.2 11.32.6.1.82-.26.82-.58v-2.04c-3.34.72-4.04-1.6-4.04-1.6-.54-1.38-1.33-1.74-1.33-1.74-1.08-.74.08-.73.08-.73 1.2.09 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.48 1 .1-.77.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.23-3.22-.13-.3-.53-1.52.12-3.17 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02.005 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.65 1.65.25 2.87.12 3.17.77.84 1.23 1.9 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 24 12.3 12 12 0 0 0 12 .3z"/></svg>
+      </a>
+      <!-- Email -->
+      <a class="nav-icon" href="mailto:j.m.love1560@gmail.com" title="Email">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+      </a>
+      <!-- Resume -->
+      <a class="nav-resume" href="Jack Love Resume 2026.pdf" target="_blank" rel="noopener">
+        <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 1v8M4 6l3 3 3-3M2 11h10"/></svg>
+        Résumé
+      </a>
+    </div>
+
+    <!-- Mobile hamburger -->
+    <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile drawer -->
+  <div class="nav-drawer" id="drawer">
+    <a href="#" class="active">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Projects
+    </a>
+    <a href="#">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      About
+    </a>
+    <a href="#">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h10M4 18h12"/></svg>
+      Writing
+    </a>
+    <a href="#">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Contact
+    </a>
+    <div class="nav-drawer-divider"></div>
+    <a href="https://linkedin.com/in/yourhandle" target="_blank" rel="noopener">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.37V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.35-1.85 3.58 0 4.24 2.36 4.24 5.43v6.31zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.78 13.02H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.46C23.2 24 24 23.23 24 22.27V1.73C24 .77 23.2 0 22.23 0z"/></svg>
+      LinkedIn
+    </a>
+    <a href="https://github.com/yourhandle" target="_blank" rel="noopener">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3A12 12 0 0 0 0 12.3c0 5.27 3.44 9.74 8.2 11.32.6.1.82-.26.82-.58v-2.04c-3.34.72-4.04-1.6-4.04-1.6-.54-1.38-1.33-1.74-1.33-1.74-1.08-.74.08-.73.08-.73 1.2.09 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.48 1 .1-.77.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.23-3.22-.13-.3-.53-1.52.12-3.17 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02.005 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.65 1.65.25 2.87.12 3.17.77.84 1.23 1.9 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 24 12.3 12 12 0 0 0 12 .3z"/></svg>
+      GitHub
+    </a>
+    <a href="/cdn-cgi/l/email-protection#d9a0b6ac99bca1b8b4a9b5bcf7bab6b4">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+      Email me
+    </a>
+    <a href="#" class="nav-drawer-resume" target="_blank" rel="noopener">
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px"><path d="M7 1v8M4 6l3 3 3-3M2 11h10"/></svg>
+      Download Résumé
+    </a>
+  </div>
+
+  <header>
+    <h1>Projects <em>&amp;</em> Post Mortems</h1>
+  </header>
+
+  <main class="feed">
+
+    <!-- Card 1 -->
+    <a class="card card-red" href="#">
+      <div class="card-image">
+        <img src="Images/hyperfist_key2_logo.png" alt="HYPERFIST key art" loading="lazy" />
+        <div class="card-tags">
+          <span class="tag featured">Unreal 5</span>
+          <span class="tag">20+ Person Team</span>
+          <span class="tag">HLSL</span>
+          <span class="tag">Steam Deck</span>
+          <a class="tag steam" href="https://store.steampowered.com/app/3689210/HYPERFIST/" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+            <svg class="tag-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.492 1.009 2.447-.397.957-1.494 1.41-2.455 1.02zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.253 0-2.265-1.014-2.265-2.265z"/></svg>
+            Steam
+          </a>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-year">2026</span>
+            <span class="card-dot"></span>
+            <span class="card-category">Unreal 5 Game</span>
+          </div>
+          <h2 class="card-title"><rd>HYPERFIST - Graphics & Gameplay Programmer</rd></h2>
+          <p class="card-blurb">A fast-paced first person beat-em-up and my first foray into Unreal Engine 5. My role involved improving game feel with flashy shaders and post-process effects, integrating steam features like achievements and leaderboards, and helping integrate challenge mode features.</p>
+          <span class="card-link">
+            View project
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Card 2 -->
+    <a class="card card-blue" href="#">
+      <div class="card-image">
+        <img src="Images/NiteLiteLogo_Wallpaper.avif" alt="NITE LITE logo" loading="lazy" />
+        <div class="card-tags">
+          <span class="tag featured-blue">Custom Engine</span>
+          <span class="tag">9 Person Team</span>
+          <span class="tag">C++</span>
+          <span class="tag">C#</span>
+          <a class="tag" href="https://ec-ww.github.io/NiteLiteSite/" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+            <svg class="tag-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3A12 12 0 0 0 0 12.3c0 5.27 3.44 9.74 8.2 11.32.6.1.82-.26.82-.58v-2.04c-3.34.72-4.04-1.6-4.04-1.6-.54-1.38-1.33-1.74-1.33-1.74-1.08-.74.08-.73.08-.73 1.2.09 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.48 1 .1-.77.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.23-3.22-.13-.3-.53-1.52.12-3.17 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02.005 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.65 1.65.25 2.87.12 3.17.77.84 1.23 1.9 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 24 12.3 12 12 0 0 0 12 .3z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-year">2025</span>
+            <span class="card-dot"></span>
+            <span class="card-category">Custom C++ Engine</span>
+          </div>
+          <h2 class="card-title">NITE LITE - Scripting Engineer</h2>
+          <p class="card-blurb">NITE LITE's scripting engine has a full custom unity-like C# scripting system with everything you would expect from a GameObject and a custom event system.</p>
+          <span class="card-link">
+            View project
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Card 3 -->
+    <a class="card card-red" href="#">
+      <div class="card-image">
+        <img src="Images/KLGameplay.jpg" alt="KnightLight gameplay" loading="lazy" />
+        <div class="card-tags">
+          <span class="tag featured">C++</span>
+          <span class="tag">Custom Engine</span>
+          <span class="tag">2D Platformer</span>
+          <a class="tag" href="https://store.steampowered.com/app/3086850/KnightLight/" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+            <svg class="tag-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.492 1.009 2.447-.397.957-1.494 1.41-2.455 1.02zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.253 0-2.265-1.014-2.265-2.265z"/></svg>
+            Steam
+          </a>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-year">2024</span>
+            <span class="card-dot"></span>
+            <span class="card-category">C++ Written Game</span>
+          </div>
+          <h2 class="card-title">KnightLight - Tools & Gameplay Programmer</h2>
+          <p class="card-blurb">KnightLight is a 2D puzzle-platformer where I did a fair amount of engine/tools work, including implementing systems for sound, animation, particles, and an immediate-mode scripting interface. Once these systems were in place, I moved to helping our team's designers work on gameplay code.</p>
+          <span class="card-link">
+            View project
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Card 4 -->
+    <a class="card card-blue" href="#">
+      <div class="card-image">
+        <img src="Images/CCGameplay.jpg" alt="Combat Cat gameplay" loading="lazy" />
+        <div class="card-tags">
+          <span class="tag featured-blue">Boss Design</span>
+          <span class="tag">C</span>
+          <span class="tag">2D Shooter</span>
+          <a class="tag" href="https://store.steampowered.com/app/2925730/Combat_Cat/" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+            <svg class="tag-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.492 1.009 2.447-.397.957-1.494 1.41-2.455 1.02zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.253 0-2.265-1.014-2.265-2.265z"/></svg>
+            Steam
+          </a>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-year">2023</span>
+            <span class="card-dot"></span>
+            <span class="card-category">C Written Game</span>
+          </div>
+          <h2 class="card-title">Combat Cat - Gameplay Programmer</h2>
+          <p class="card-blurb">2 of the 3 Bosses in this 2D shooter were implemented by me, as well as a C-style serialization system and enemy wave manager.</p>
+          <span class="card-link">
+            View project
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </div>
+      </div>
+    </a>
+
+  </main>
+
+  <footer>
+    Jack Love
+  </footer>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    const btn = document.getElementById('hamburger');
+    const drawer = document.getElementById('drawer');
+    btn.addEventListener('click', () => {
+      const open = drawer.classList.toggle('open');
+      btn.classList.toggle('open', open);
+    });
+    // Close drawer when a link is tapped
+    drawer.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        drawer.classList.remove('open');
+        btn.classList.remove('open');
+      });
+    });
