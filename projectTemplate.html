@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Name - Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
+    rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="Images/favicon.png">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0e0f11;
+      --surface: #16181c;
+      --surface-2: #1e2027;
+      --ink: #f0f1f4;
+      --ink-muted: #7a7f8e;
+      --red: #e8392a;
+      --red-dim: rgba(232, 57, 42, 0.12);
+      --blue: #2d6ef5;
+      --blue-dim: rgba(45, 110, 245, 0.12);
+      --accent: var(--red);
+      --accent-light: var(--red-dim);
+      --border: rgba(255, 255, 255, 0.07);
+      --tag-bg: rgba(255, 255, 255, 0.06);
+      --tag-ink: #9ba3b5;
+      --radius: 16px;
+      --shadow: 0 2px 12px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
+      --shadow-hover: 0 16px 48px rgba(0, 0, 0, 0.6), 0 4px 16px rgba(0, 0, 0, 0.4);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      padding-top: 72px;
+    }
+
+    /* ── Navbar ── */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      padding: 0 28px;
+      background: rgba(14, 15, 17, 0.82);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-name {
+      font-family: 'Instrument Serif', serif;
+      font-size: 2.3rem;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      color: var(--blue);
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .nav-name span {
+      color: var(--red);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-muted);
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      transition: color 0.15s, background 0.15s;
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .nav-links a.active {
+      color: var(--red);
+    }
+
+    .nav-icons {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .nav-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      color: var(--ink-muted);
+      text-decoration: none;
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .nav-icon:hover {
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    /* ── Main Content ── */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 28px;
+    }
+
+    .project-header {
+      margin-bottom: 80px;
+    }
+
+    .project-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      color: var(--ink-muted);
+    }
+
+    .project-meta span {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .project-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--ink-muted);
+    }
+
+    .project-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: 4rem;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      color: var(--ink);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+    }
+
+    .project-description {
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--ink-muted);
+      max-width: 700px;
+      margin-bottom: 48px;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 60px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: var(--tag-bg);
+      color: var(--tag-ink);
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid transparent;
+      text-decoration: none;
+      transition: all 0.15s;
+    }
+
+    .tag:hover {
+      color: var(--ink);
+      border-color: var(--border);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .tag.featured {
+      background: var(--red-dim);
+      color: var(--red);
+      border-color: rgba(232, 57, 42, 0.2);
+    }
+
+    .tag.featured:hover {
+      background: var(--red-dim);
+      border-color: var(--red);
+    }
+
+    /* ── Content Sections ── */
+    .section {
+      margin-bottom: 120px;
+    }
+
+    .section-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: 2.4rem;
+      margin-bottom: 48px;
+      color: var(--ink);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+    }
+
+    .section-subtitle {
+      font-size: 20px;
+      font-weight: 500;
+      margin-bottom: 24px;
+      color: var(--ink);
+    }
+
+    .prose {
+      max-width: 800px;
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--ink-muted);
+    }
+
+    .prose p {
+      margin-bottom: 20px;
+    }
+
+    .prose p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* ── Gallery Grid ── */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 60px;
+    }
+
+    .gallery-card {
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      transition: all 0.3s ease;
+    }
+
+    .gallery-card:hover {
+      border-color: var(--accent);
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-4px);
+    }
+
+    .gallery-card-image {
+      width: 100%;
+      height: 280px;
+      background: var(--surface-2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .gallery-card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .gallery-card-image:not(:has(img)) {
+      background: linear-gradient(135deg, var(--surface) 0%, var(--surface-2) 100%);
+      color: var(--ink-muted);
+      font-size: 14px;
+      text-align: center;
+      padding: 24px;
+    }
+
+    .gallery-card-label {
+      padding: 20px;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .gallery-card-label h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 8px;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .gallery-card-label p {
+      font-size: 13px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+    }
+
+    /* ── Code Snippets ── */
+    .code-snippets {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 24px;
+      margin-bottom: 60px;
+    }
+
+    .code-card {
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--accent-light);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .code-card:hover {
+      border-color: var(--accent);
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-4px);
+    }
+
+    .code-header {
+      padding: 16px 20px;
+      background: var(--accent-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+
+    .code-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent), var(--accent) 60%, transparent);
+      box-shadow: 0 0 8px rgba(232, 57, 42, 0.4);
+    }
+
+    .code-language {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 1;
+    }
+
+    .code-label {
+      font-size: 13px;
+      color: var(--ink);
+      font-weight: 500;
+      margin-left: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .code-traffic-lights {
+      display: flex;
+      gap: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .traffic-light {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--surface);
+    }
+
+    .traffic-light.red {
+      background: #ff5f57;
+    }
+
+    .traffic-light.yellow {
+      background: #ffbd2e;
+    }
+
+    .traffic-light.green {
+      background: #28c940;
+    }
+
+    .code-body {
+      padding: 20px;
+      overflow-x: auto;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      background: var(--accent-light);
+      position: relative;
+    }
+
+    .code-body::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent), var(--accent) 60%, transparent);
+      box-shadow: 0 0 8px rgba(232, 57, 42, 0.4);
+    }
+
+    .code-body pre {
+      margin: 0;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--ink);
+      position: relative;
+      z-index: 1;
+    }
+
+    .code-body code {
+      display: block;
+      word-wrap: break-word;
+      white-space: pre-wrap;
+    }
+
+    .code-description {
+      padding: 16px 20px;
+      background: var(--accent-light);
+      position: relative;
+    }
+
+    .code-description p {
+      font-size: 12px;
+      color: var(--ink-muted);
+      line-height: 1.6;
+      margin: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 60px 28px;
+      color: var(--ink-muted);
+      border-top: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      main {
+        padding: 60px 20px;
+      }
+
+      .project-title {
+        font-size: 2.8rem;
+      }
+
+      .section-title {
+        font-size: 1.8rem;
+      }
+
+      .gallery-grid,
+      .code-snippets {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery-card-image {
+        height: 240px;
+      }
+
+      .project-description {
+        font-size: 16px;
+      }
+    }
+
+    /* ── Syntax Highlighting Classes ── */
+    .keyword {
+      color: var(--red);
+    }
+
+    .string {
+      color: #4a9eff;
+    }
+
+    .function {
+      color: #a5ff5e;
+    }
+
+    .comment {
+      color: var(--ink-muted);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="/" class="nav-name">J<span>L</span></a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/projects" class="active">Projects</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+    </div>
+    <div class="nav-icons">
+      <a href="https://github.com" class="nav-icon" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 .3A12 12 0 0 0 0 12.3c0 5.27 3.44 9.74 8.2 11.32.6.1.82-.26.82-.58v-2.04c-3.34.72-4.04-1.6-4.04-1.6-.54-1.38-1.33-1.74-1.33-1.74-1.08-.74.08-.73.08-.73 1.2.09 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.48 1 .1-.77.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.23-3.22-.13-.3-.53-1.52.12-3.17 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02.005 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.65 1.65.25 2.87.12 3.17.77.84 1.23 1.9 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 24 12.3 12 12 0 0 0 12 .3z" />
+        </svg>
+      </a>
+      <a href="https://linkedin.com" class="nav-icon" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z" />
+        </svg>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Header Section -->
+    <header class="project-header">
+      <div class="project-meta">
+        <span>2024</span>
+        <span class="project-dot"></span>
+        <span>Personal Project</span>
+      </div>
+      <h1 class="project-title">Project Name</h1>
+      <p class="project-description">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+      </p>
+      <div class="project-tags">
+        <span class="tag featured">Key Technology</span>
+        <span class="tag">C++</span>
+        <span class="tag">Game Development</span>
+        <span class="tag">Real-time Rendering</span>
+        <a href="#" class="tag" target="_blank" rel="noopener">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 .3A12 12 0 0 0 0 12.3c0 5.27 3.44 9.74 8.2 11.32.6.1.82-.26.82-.58v-2.04c-3.34.72-4.04-1.6-4.04-1.6-.54-1.38-1.33-1.74-1.33-1.74-1.08-.74.08-.73.08-.73 1.2.09 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.48 1 .1-.77.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.23-3.22-.13-.3-.53-1.52.12-3.17 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02.005 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.65 1.65.25 2.87.12 3.17.77.84 1.23 1.9 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 24 12.3 12 12 0 0 0 12 .3z" />
+          </svg>
+          GitHub
+        </a>
+      </div>
+    </header>
+
+    <!-- Overview Section -->
+    <section class="section">
+      <h2 class="section-title">Overview</h2>
+      <div class="prose">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </p>
+        <p>
+          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+        <p>
+          Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+        </p>
+      </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="section">
+      <h2 class="section-title">Gallery</h2>
+      <div class="gallery-grid">
+        <!-- Image Card 1 -->
+        <div class="gallery-card">
+          <div class="gallery-card-image">
+            <!-- Replace with: <img src="your-image.png" alt="Description" /> -->
+            Screenshot Placeholder 1
+          </div>
+          <div class="gallery-card-label">
+            <h3>Screenshot Title</h3>
+            <p>A brief description of what's shown in this screenshot.</p>
+          </div>
+        </div>
+
+        <!-- Image Card 2 -->
+        <div class="gallery-card">
+          <div class="gallery-card-image">
+            Screenshot Placeholder 2
+          </div>
+          <div class="gallery-card-label">
+            <h3>Feature Highlight</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          </div>
+        </div>
+
+        <!-- Image Card 3 -->
+        <div class="gallery-card">
+          <div class="gallery-card-image">
+            Screenshot Placeholder 3
+          </div>
+          <div class="gallery-card-label">
+            <h3>UI/UX Design</h3>
+            <p>Showcasing the user interface and experience design elements.</p>
+          </div>
+        </div>
+
+        <!-- Image Card 4 -->
+        <div class="gallery-card">
+          <div class="gallery-card-image">
+            Screenshot Placeholder 4
+          </div>
+          <div class="gallery-card-label">
+            <h3>Implementation</h3>
+            <p>Technical implementation details and system architecture.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technical Details Section -->
+    <section class="section">
+      <h2 class="section-title">Technical Details</h2>
+      <div class="prose">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis.
+        </p>
+      </div>
+    </section>
+
+    <!-- Code Snippets Section -->
+    <section class="section">
+      <h2 class="section-title">Key Code Snippets</h2>
+      
+      <div class="code-snippets">
+        <!-- Code Card 1 -->
+        <div class="code-card">
+          <div class="code-header">
+            <div>
+              <span class="code-language">C++</span>
+              <span class="code-label">Core Algorithm</span>
+            </div>
+            <div class="code-traffic-lights">
+              <div class="traffic-light red"></div>
+              <div class="traffic-light yellow"></div>
+              <div class="traffic-light green"></div>
+            </div>
+          </div>
+          <div class="code-body">
+            <pre><code><span class="keyword">void</span> <span class="function">UpdatePhysics</span>(<span class="keyword">float</span> deltaTime) {
+  <span class="keyword">for</span> (<span class="keyword">auto</span>& entity : entities) {
+    entity.velocity += gravity * deltaTime;
+    entity.position += entity.velocity * deltaTime;
+  }
+}</code></pre>
+          </div>
+          <div class="code-description">
+            <p>Main physics update loop handling velocity and gravity calculations for all entities.</p>
+          </div>
+        </div>
+
+        <!-- Code Card 2 -->
+        <div class="code-card">
+          <div class="code-header">
+            <div>
+              <span class="code-language">GLSL</span>
+              <span class="code-label">Vertex Shader</span>
+            </div>
+            <div class="code-traffic-lights">
+              <div class="traffic-light red"></div>
+              <div class="traffic-light yellow"></div>
+              <div class="traffic-light green"></div>
+            </div>
+          </div>
+          <div class="code-body">
+            <pre><code>#version 450
+<span class="keyword">layout</span> (location = 0) <span class="keyword">in</span> vec3 aPos;
+<span class="keyword">uniform</span> mat4 model, view, proj;
+
+<span class="keyword">void</span> <span class="function">main</span>() {
+  gl_Position = proj * view * model 
+    * vec4(aPos, 1.0);
+}</code></pre>
+          </div>
+          <div class="code-description">
+            <p>Standard vertex shader applying model, view, and projection transformations.</p>
+          </div>
+        </div>
+
+        <!-- Code Card 3 -->
+        <div class="code-card">
+          <div class="code-header">
+            <div>
+              <span class="code-language">JSON</span>
+              <span class="code-label">Config Schema</span>
+            </div>
+            <div class="code-traffic-lights">
+              <div class="traffic-light red"></div>
+              <div class="traffic-light yellow"></div>
+              <div class="traffic-light green"></div>
+            </div>
+          </div>
+          <div class="code-body">
+            <pre><code>{
+  <span class="string">"version"</span>: <span class="string">"1.0"</span>,
+  <span class="string">"settings"</span>: {
+    <span class="string">"fps_cap"</span>: 60,
+    <span class="string">"resolution"</span>: [1920, 1080]
+  }
+}</code></pre>
+          </div>
+          <div class="code-description">
+            <p>Configuration file format for game settings and project metadata.</p>
+          </div>
+        </div>
+
+        <!-- Code Card 4 -->
+        <div class="code-card">
+          <div class="code-header">
+            <div>
+              <span class="code-language">C#</span>
+              <span class="code-label">Event System</span>
+            </div>
+            <div class="code-traffic-lights">
+              <div class="traffic-light red"></div>
+              <div class="traffic-light yellow"></div>
+              <div class="traffic-light green"></div>
+            </div>
+          </div>
+          <div class="code-body">
+            <pre><code><span class="keyword">public</span> <span class="keyword">class</span> <span class="function">EventManager</span> {
+  <span class="keyword">private</span> Dictionary&lt;<span class="keyword">string</span>, 
+    Action&gt; events;
+    
+  <span class="keyword">public</span> <span class="keyword">void</span> <span class="function">Trigger</span>
+    (<span class="keyword">string</span> eventName) {
+    events[eventName]?.Invoke();
+  }
+}</code></pre>
+          </div>
+          <div class="code-description">
+            <p>Event management system for decoupled communication between game systems.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Challenges & Solutions Section -->
+    <section class="section">
+      <h2 class="section-title">Challenges & Solutions</h2>
+      <div class="prose">
+        <h3 class="section-subtitle">Challenge: Performance Optimization</h3>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </p>
+        
+        <h3 class="section-subtitle">Solution: Memory Management</h3>
+        <p>
+          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+
+        <h3 class="section-subtitle">Challenge: Cross-Platform Compatibility</h3>
+        <p>
+          Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+        </p>
+      </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="section">
+      <h2 class="section-title">Results & Learnings</h2>
+      <div class="prose">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nulla facilisi. Cras non velit nec insultans risus feugis. Ut posuere, neque vel hendrerit laoreet, ante metus ornare nisl, eget faucibus orci nunc eu nisi.
+        </p>
+        <p>
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, blandit quis, lorem. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    Jack Love
+  </footer>
+
+</body>
+
+</html>
