@@ -265,11 +265,83 @@
       margin-bottom: 0;
     }
 
+    .content-card-grid {
+      columns: 3;
+      column-gap: 24px;
+      margin-bottom: 60px;
+    }
+
+    .content-card-grid--wide {
+      columns: 2;
+    }
+
+    .content-card-grid.content-card-grid--2col,
+    .gallery-grid.content-card-grid--2col {
+      columns: 2;
+    }
+
+    .content-card-grid.content-card-grid--3col,
+    .gallery-grid.content-card-grid--3col {
+      columns: 3;
+    }
+
+    .content-card-grid.content-card-grid--4col,
+    .gallery-grid.content-card-grid--4col {
+      columns: 4;
+    }
+
+    @media (max-width: 768px) {
+      .content-card-grid.content-card-grid--2col,
+      .gallery-grid.content-card-grid--2col,
+      .content-card-grid.content-card-grid--3col,
+      .gallery-grid.content-card-grid--3col,
+      .content-card-grid.content-card-grid--4col,
+      .gallery-grid.content-card-grid--4col {
+        columns: 1;
+      }
+    }
+
+    .content-card {
+      --card-accent: var(--accent);
+      --card-surface: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--card-surface);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .content-card:hover {
+      border-color: var(--card-accent);
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-4px);
+    }
+
+    .content-card--image {
+      --card-accent: var(--blue);
+      --card-surface: var(--surface);
+    }
+
+    .content-card--code {
+      --card-accent: var(--accent);
+      --card-surface: var(--accent-light);
+    }
+
+    .content-card--prose {
+      --card-accent: var(--blue);
+      --card-surface: var(--surface-2);
+      max-width: none;
+      padding: 28px;
+      gap: 16px;
+    }
+
     /* ── Gallery Grid ── */
     .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 24px;
+      columns: 3;
+      column-gap: 24px;
       margin-bottom: 60px;
     }
 
@@ -289,19 +361,27 @@
 
     .gallery-card-image {
       width: 100%;
-      height: 280px;
       background: var(--surface-2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: block;
       overflow: hidden;
       position: relative;
     }
 
+    .gallery-card-image:has(img)::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 22%;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0), #000 72%);
+      pointer-events: none;
+    }
+
     .gallery-card-image img {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto;
+      display: block;
     }
 
     .gallery-card-image:not(:has(img)) {
@@ -314,14 +394,13 @@
 
     .gallery-card-label {
       padding: 20px;
-      border-top: 1px solid var(--border);
-      background: var(--surface);
+      background: #000;
     }
 
     .gallery-card-label h3 {
       font-size: 14px;
       font-weight: 600;
-      color: var(--ink);
+      color: #fff;
       margin-bottom: 8px;
       letter-spacing: 0.02em;
       text-transform: uppercase;
@@ -329,7 +408,7 @@
 
     .gallery-card-label p {
       font-size: 13px;
-      color: var(--ink-muted);
+      color: rgba(255, 255, 255, 0.72);
       line-height: 1.5;
     }
 
@@ -600,9 +679,9 @@
     <!-- Gallery Section -->
     <section class="section">
       <h2 class="section-title">Gallery</h2>
-      <div class="gallery-grid">
+      <div class="gallery-grid content-card-grid">
         <!-- Image Card 1 -->
-        <div class="gallery-card">
+        <div class="gallery-card content-card content-card--image">
           <div class="gallery-card-image">
             <!-- Replace with: <img src="your-image.png" alt="Description" /> -->
             Screenshot Placeholder 1
@@ -614,7 +693,7 @@
         </div>
 
         <!-- Image Card 2 -->
-        <div class="gallery-card">
+        <div class="gallery-card content-card content-card--image">
           <div class="gallery-card-image">
             Screenshot Placeholder 2
           </div>
@@ -625,7 +704,7 @@
         </div>
 
         <!-- Image Card 3 -->
-        <div class="gallery-card">
+        <div class="gallery-card content-card content-card--image">
           <div class="gallery-card-image">
             Screenshot Placeholder 3
           </div>
@@ -636,7 +715,7 @@
         </div>
 
         <!-- Image Card 4 -->
-        <div class="gallery-card">
+        <div class="gallery-card content-card content-card--image">
           <div class="gallery-card-image">
             Screenshot Placeholder 4
           </div>
@@ -651,7 +730,7 @@
     <!-- Technical Details Section -->
     <section class="section">
       <h2 class="section-title">Technical Details</h2>
-      <div class="prose">
+      <div class="prose content-card content-card--prose">
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis.
         </p>
@@ -662,9 +741,9 @@
     <section class="section">
       <h2 class="section-title">Key Code Snippets</h2>
       
-      <div class="code-snippets">
+      <div class="code-snippets content-card-grid content-card-grid--wide">
         <!-- Code Card 1 -->
-        <div class="code-card">
+        <div class="code-card content-card content-card--code">
           <div class="code-header">
             <div>
               <span class="code-language">C++</span>
@@ -690,7 +769,7 @@
         </div>
 
         <!-- Code Card 2 -->
-        <div class="code-card">
+        <div class="code-card content-card content-card--code">
           <div class="code-header">
             <div>
               <span class="code-language">GLSL</span>
@@ -718,7 +797,7 @@
         </div>
 
         <!-- Code Card 3 -->
-        <div class="code-card">
+        <div class="code-card content-card content-card--code">
           <div class="code-header">
             <div>
               <span class="code-language">JSON</span>
@@ -745,7 +824,7 @@
         </div>
 
         <!-- Code Card 4 -->
-        <div class="code-card">
+        <div class="code-card content-card content-card--code">
           <div class="code-header">
             <div>
               <span class="code-language">C#</span>
