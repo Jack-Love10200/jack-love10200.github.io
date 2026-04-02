@@ -271,6 +271,18 @@
       background: #000;
     }
 
+    .video-embed-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    .video-embed-grid .video-embed {
+      width: 100%;
+      margin-top: 0;
+    }
+
     .video-embed iframe {
       width: 100%;
       height: 100%;
@@ -528,6 +540,12 @@
       }
     }
 
+    @media (min-width: 900px) {
+      .video-embed-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
     /* ── Syntax Highlighting Classes ── */
     .keyword {
       color: var(--red);
@@ -560,12 +578,15 @@
     <div class="nav-icons">
       <a href="https://github.com/Jack-Love10200" class="nav-icon" target="_blank" rel="noopener" aria-label="GitHub">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 .3A12 12 0 0 0 0 12.3c0 5.27 3.44 9.74 8.2 11.32.6.1.82-.26.82-.58v-2.04c-3.34.72-4.04-1.6-4.04-1.6-.54-1.38-1.33-1.74-1.33-1.74-1.08-.74.08-.73.08-.73 1.2.09 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.48 1 .1-.77.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.23-3.22-.13-.3-.53-1.52.12-3.17 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02.005 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.65 1.65.25 2.87.12 3.17.77.84 1.23 1.9 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 24 12.3 12 12 0 0 0 12 .3z" />
+          <path
+            d="M12 .3A12 12 0 0 0 0 12.3c0 5.27 3.44 9.74 8.2 11.32.6.1.82-.26.82-.58v-2.04c-3.34.72-4.04-1.6-4.04-1.6-.54-1.38-1.33-1.74-1.33-1.74-1.08-.74.08-.73.08-.73 1.2.09 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.48 1 .1-.77.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.23-3.22-.13-.3-.53-1.52.12-3.17 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02.005 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.65 1.65.25 2.87.12 3.17.77.84 1.23 1.9 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 24 12.3 12 12 0 0 0 12 .3z" />
         </svg>
       </a>
-      <a href="https://linkedin.com/in/jack-m-love" class="nav-icon" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <a href="https://linkedin.com/in/jack-m-love" class="nav-icon" target="_blank" rel="noopener"
+        aria-label="LinkedIn">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z" />
+          <path
+            d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z" />
         </svg>
       </a>
     </div>
@@ -582,7 +603,8 @@
       </div>
       <h1 class="project-title">Papercraft Unity Render Pipeline</h1>
       <p class="project-description">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore
+        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
       </p>
       <div class="project-tags">
         <span class="tag featured">Unity 6000</span>
@@ -603,13 +625,19 @@
       <h2 class="section-title">Overview</h2>
       <div class="prose">
         <p>
-          This Render Pipeline was developed as part of a collaborative demo project for a game about collecting trash. The main mechanic of the game is what inspired the rendering style. The idea was to have each frame look somewhat like a photo of a papercraft diorama, with visible texture and shadow.
+          This Render Pipeline was developed as part of a collaborative demo project for a game about collecting trash.
+          The main mechanic of the game is what inspired the rendering style. The idea was to have each frame look
+          somewhat like a photo of a papercraft diorama, with visible texture and shadow.
         </p>
         <p>
-          The decision to create a full custom render pipeline rather than using unity's URP led to several unique challenges, but ultimately allowed for a lighter weight rendering solution focused solely on the effects needed for the Papercraft style, including custom shadow textures, drop shadows between objects, and paper texture overlays.
+          The decision to create a full custom render pipeline rather than using unity's URP led to several unique
+          challenges, but ultimately allowed for a lighter weight rendering solution focused solely on the effects
+          needed for the Papercraft style, including custom shadow textures, drop shadows between objects, and paper
+          texture overlays.
         </p>
         <p>
-          Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+          Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem
+          aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
         </p>
       </div>
     </section>
@@ -618,126 +646,166 @@
       <h2 class="section-title">References</h2>
       <div class="prose">
         <p>
-          The art style for this project was inspired by the following existing unity rendering projects, in particulal the use of custom shadow textures from <a href="https://www.youtube.com/@uselessgamedev" target="_blank" rel="noopener noreferrer">Useless Game Dev</a>.
+          The art style for this project was inspired by the below rendering projects on YouTube, in particulal the use
+          of custom shadow textures from <a href="https://www.youtube.com/@uselessgamedev" target="_blank"
+            rel="noopener noreferrer">Useless Game Dev</a>.
         </p>
-        <div class="video-embed">
-          <iframe src="https://www.youtube-nocookie.com/embed/jlKNOirh66E" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-        </div>
+        <p>
+          The main technical reference for the technical implementation of the render pipeline was Jasper Flick's <a
+            href="https://catlikecoding.com/unity/custom-srp/" target="_blank" rel="noopener noreferrer">Catlike Coding
+            Custom SRP</a>, in I found his implementations for shadow mapping and getting renderer lists very helpful.
+        </p>
 
-        <div class="video-embed">
-          <iframe src="https://www.youtube-nocookie.com/embed/U51yrbgBmAo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-        </div>
+        <div class="video-embed-grid">
+          <div class="video-embed">
+            <iframe src="https://www.youtube-nocookie.com/embed/jlKNOirh66E" title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen></iframe>
+          </div>
 
-      </div>
-    </section>
-
-    <!-- Gallery Section -->
-    <section class="section">
-      <h2 class="section-title">Gallery</h2>
-      <div class="gallery-grid">
-        <!-- Image Card 1 -->
-        <div class="gallery-card">
-          <div class="gallery-card-image">
-            <!-- Replace with: <img src="your-image.png" alt="Description" /> -->
-            Screenshot Placeholder 1
-          </div>
-          <div class="gallery-card-label">
-            <h3>Screenshot Title</h3>
-            <p>A brief description of what's shown in this screenshot.</p>
-          </div>
-        </div>
-
-        <!-- Image Card 2 -->
-        <div class="gallery-card">
-          <div class="gallery-card-image">
-            Screenshot Placeholder 2
-          </div>
-          <div class="gallery-card-label">
-            <h3>Feature Highlight</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-          </div>
-        </div>
-
-        <!-- Image Card 3 -->
-        <div class="gallery-card">
-          <div class="gallery-card-image">
-            Screenshot Placeholder 3
-          </div>
-          <div class="gallery-card-label">
-            <h3>UI/UX Design</h3>
-            <p>Showcasing the user interface and experience design elements.</p>
-          </div>
-        </div>
-
-        <!-- Image Card 4 -->
-        <div class="gallery-card">
-          <div class="gallery-card-image">
-            Screenshot Placeholder 4
-          </div>
-          <div class="gallery-card-label">
-            <h3>Implementation</h3>
-            <p>Technical implementation details and system architecture.</p>
+          <div class="video-embed">
+            <iframe src="https://www.youtube-nocookie.com/embed/U51yrbgBmAo" title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen></iframe>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Technical Details Section -->
+
     <section class="section">
-      <h2 class="section-title">Technical Details</h2>
+      <h2 class="section-title">Implementation Details</h2>
       <div class="prose">
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis.
+          One of the main goals for the render pipeline was to create something scalable and lightweight, and easily
+          configurable. For unity SRPs this begins with the render pipline asset, which is where global settings for the
+          render pipeline instance live, I decided to have the main structure be a list of "Render Passes", which are in 
+          themselves unity ScriptableObjects, allowing them to be be added, removed, and configured from the editor once implemented.
+        </p>
+        <p>
+
+          <div class="code-card">
+            <div class="code-header">
+              <div>
+                <span class="code-language">C#</span>
+                <span class="code-label">RenderPipelineAsset.cs</span>
+                
+          </div>
+
         </p>
       </div>
-    </section>
 
-    <!-- Code Snippets Section -->
-    <section class="section">
-      <h2 class="section-title">Key Code Snippets</h2>
-      
-      <div class="code-snippets">
-        <!-- Code Card 1 -->
-        <div class="code-card">
-          <div class="code-header">
-            <div>
-              <span class="code-language">C++</span>
-              <span class="code-label">Core Algorithm</span>
+      <!-- Gallery Section -->
+      <section class="section">
+        <h2 class="section-title">Gallery</h2>
+        <div class="gallery-grid">
+          <!-- Image Card 1 -->
+          <div class="gallery-card">
+            <div class="gallery-card-image">
+              <!-- Replace with: <img src="your-image.png" alt="Description" /> -->
+              Screenshot Placeholder 1
             </div>
-            <div class="code-traffic-lights">
-              <div class="traffic-light red"></div>
-              <div class="traffic-light yellow"></div>
-              <div class="traffic-light green"></div>
+            <div class="gallery-card-label">
+              <h3>Screenshot Title</h3>
+              <p>A brief description of what's shown in this screenshot.</p>
             </div>
           </div>
-          <div class="code-body">
-            <pre><code><span class="keyword">void</span> <span class="function">UpdatePhysics</span>(<span class="keyword">float</span> deltaTime) {
+
+          <!-- Image Card 2 -->
+          <div class="gallery-card">
+            <div class="gallery-card-image">
+              Screenshot Placeholder 2
+            </div>
+            <div class="gallery-card-label">
+              <h3>Feature Highlight</h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+          </div>
+
+          <!-- Image Card 3 -->
+          <div class="gallery-card">
+            <div class="gallery-card-image">
+              Screenshot Placeholder 3
+            </div>
+            <div class="gallery-card-label">
+              <h3>UI/UX Design</h3>
+              <p>Showcasing the user interface and experience design elements.</p>
+            </div>
+          </div>
+
+          <!-- Image Card 4 -->
+          <div class="gallery-card">
+            <div class="gallery-card-image">
+              Screenshot Placeholder 4
+            </div>
+            <div class="gallery-card-label">
+              <h3>Implementation</h3>
+              <p>Technical implementation details and system architecture.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Technical Details Section -->
+      <section class="section">
+        <h2 class="section-title">Technical Details</h2>
+        <div class="prose">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus
+            vel facilisis.
+          </p>
+        </div>
+      </section>
+
+      <!-- Code Snippets Section -->
+      <section class="section">
+        <h2 class="section-title">Key Code Snippets</h2>
+
+        <div class="code-snippets">
+          <!-- Code Card 1 -->
+          <div class="code-card">
+            <div class="code-header">
+              <div>
+                <span class="code-language">C++</span>
+                <span class="code-label">Core Algorithm</span>
+              </div>
+              <div class="code-traffic-lights">
+                <div class="traffic-light red"></div>
+                <div class="traffic-light yellow"></div>
+                <div class="traffic-light green"></div>
+              </div>
+            </div>
+            <div class="code-body">
+              <pre><code><span class="keyword">void</span> <span class="function">UpdatePhysics</span>(<span class="keyword">float</span> deltaTime) {
   <span class="keyword">for</span> (<span class="keyword">auto</span>& entity : entities) {
     entity.velocity += gravity * deltaTime;
     entity.position += entity.velocity * deltaTime;
   }
 }</code></pre>
+            </div>
+            <div class="code-description">
+              <p>Main physics update loop handling velocity and gravity calculations for all entities.</p>
+            </div>
           </div>
-          <div class="code-description">
-            <p>Main physics update loop handling velocity and gravity calculations for all entities.</p>
-          </div>
-        </div>
 
-        <!-- Code Card 2 -->
-        <div class="code-card">
-          <div class="code-header">
-            <div>
-              <span class="code-language">GLSL</span>
-              <span class="code-label">Vertex Shader</span>
+          <!-- Code Card 2 -->
+          <div class="code-card">
+            <div class="code-header">
+              <div>
+                <span class="code-language">GLSL</span>
+                <span class="code-label">Vertex Shader</span>
+              </div>
+              <div class="code-traffic-lights">
+                <div class="traffic-light red"></div>
+                <div class="traffic-light yellow"></div>
+                <div class="traffic-light green"></div>
+              </div>
             </div>
-            <div class="code-traffic-lights">
-              <div class="traffic-light red"></div>
-              <div class="traffic-light yellow"></div>
-              <div class="traffic-light green"></div>
-            </div>
-          </div>
-          <div class="code-body">
-            <pre><code>#version 450
+            <div class="code-body">
+              <pre><code>#version 450
 <span class="keyword">layout</span> (location = 0) <span class="keyword">in</span> vec3 aPos;
 <span class="keyword">uniform</span> mat4 model, view, proj;
 
@@ -745,54 +813,54 @@
   gl_Position = proj * view * model 
     * vec4(aPos, 1.0);
 }</code></pre>
+            </div>
+            <div class="code-description">
+              <p>Standard vertex shader applying model, view, and projection transformations.</p>
+            </div>
           </div>
-          <div class="code-description">
-            <p>Standard vertex shader applying model, view, and projection transformations.</p>
-          </div>
-        </div>
 
-        <!-- Code Card 3 -->
-        <div class="code-card">
-          <div class="code-header">
-            <div>
-              <span class="code-language">JSON</span>
-              <span class="code-label">Config Schema</span>
+          <!-- Code Card 3 -->
+          <div class="code-card">
+            <div class="code-header">
+              <div>
+                <span class="code-language">JSON</span>
+                <span class="code-label">Config Schema</span>
+              </div>
+              <div class="code-traffic-lights">
+                <div class="traffic-light red"></div>
+                <div class="traffic-light yellow"></div>
+                <div class="traffic-light green"></div>
+              </div>
             </div>
-            <div class="code-traffic-lights">
-              <div class="traffic-light red"></div>
-              <div class="traffic-light yellow"></div>
-              <div class="traffic-light green"></div>
-            </div>
-          </div>
-          <div class="code-body">
-            <pre><code>{
+            <div class="code-body">
+              <pre><code>{
   <span class="string">"version"</span>: <span class="string">"1.0"</span>,
   <span class="string">"settings"</span>: {
     <span class="string">"fps_cap"</span>: 60,
     <span class="string">"resolution"</span>: [1920, 1080]
   }
 }</code></pre>
+            </div>
+            <div class="code-description">
+              <p>Configuration file format for game settings and project metadata.</p>
+            </div>
           </div>
-          <div class="code-description">
-            <p>Configuration file format for game settings and project metadata.</p>
-          </div>
-        </div>
 
-        <!-- Code Card 4 -->
-        <div class="code-card">
-          <div class="code-header">
-            <div>
-              <span class="code-language">C#</span>
-              <span class="code-label">Event System</span>
+          <!-- Code Card 4 -->
+          <div class="code-card">
+            <div class="code-header">
+              <div>
+                <span class="code-language">C#</span>
+                <span class="code-label">Event System</span>
+              </div>
+              <div class="code-traffic-lights">
+                <div class="traffic-light red"></div>
+                <div class="traffic-light yellow"></div>
+                <div class="traffic-light green"></div>
+              </div>
             </div>
-            <div class="code-traffic-lights">
-              <div class="traffic-light red"></div>
-              <div class="traffic-light yellow"></div>
-              <div class="traffic-light green"></div>
-            </div>
-          </div>
-          <div class="code-body">
-            <pre><code><span class="keyword">public</span> <span class="keyword">class</span> <span class="function">EventManager</span> {
+            <div class="code-body">
+              <pre><code><span class="keyword">public</span> <span class="keyword">class</span> <span class="function">EventManager</span> {
   <span class="keyword">private</span> Dictionary&lt;<span class="keyword">string</span>, 
     Action&gt; events;
     
@@ -801,47 +869,56 @@
     events[eventName]?.Invoke();
   }
 }</code></pre>
-          </div>
-          <div class="code-description">
-            <p>Event management system for decoupled communication between game systems.</p>
+            </div>
+            <div class="code-description">
+              <p>Event management system for decoupled communication between game systems.</p>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Challenges & Solutions Section -->
-    <section class="section">
-      <h2 class="section-title">Challenges & Solutions</h2>
-      <div class="prose">
-        <h3 class="section-subtitle">Challenge: Performance Optimization</h3>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        </p>
-        
-        <h3 class="section-subtitle">Solution: Memory Management</h3>
-        <p>
-          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </p>
+      <!-- Challenges & Solutions Section -->
+      <section class="section">
+        <h2 class="section-title">Challenges & Solutions</h2>
+        <div class="prose">
+          <h3 class="section-subtitle">Challenge: Performance Optimization</h3>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea commodo consequat.
+          </p>
 
-        <h3 class="section-subtitle">Challenge: Cross-Platform Compatibility</h3>
-        <p>
-          Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-        </p>
-      </div>
-    </section>
+          <h3 class="section-subtitle">Solution: Memory Management</h3>
+          <p>
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+            laborum.
+          </p>
 
-    <!-- Results Section -->
-    <section class="section">
-      <h2 class="section-title">Results & Learnings</h2>
-      <div class="prose">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nulla facilisi. Cras non velit nec insultans risus feugis. Ut posuere, neque vel hendrerit laoreet, ante metus ornare nisl, eget faucibus orci nunc eu nisi.
-        </p>
-        <p>
-          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, blandit quis, lorem. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        </p>
-      </div>
-    </section>
+          <h3 class="section-subtitle">Challenge: Cross-Platform Compatibility</h3>
+          <p>
+            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem
+            aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+          </p>
+        </div>
+      </section>
+
+      <!-- Results Section -->
+      <section class="section">
+        <h2 class="section-title">Results & Learnings</h2>
+        <div class="prose">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Nulla facilisi. Cras non velit nec insultans risus feugis. Ut posuere, neque vel
+            hendrerit laoreet, ante metus ornare nisl, eget faucibus orci nunc eu nisi.
+          </p>
+          <p>
+            Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum
+            tortor quam, feugiat vitae, ultricies eget, blandit quis, lorem. Lorem ipsum dolor sit amet, consectetur
+            adipiscing elit.
+          </p>
+        </div>
+      </section>
 
   </main>
 
