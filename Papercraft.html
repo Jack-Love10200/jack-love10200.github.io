@@ -147,7 +147,7 @@
     }
 
     .project-header {
-      margin-bottom: 80px;
+      margin-bottom: 40px;
     }
 
     .project-meta {
@@ -186,7 +186,7 @@
       font-size: 18px;
       line-height: 1.6;
       color: var(--ink-muted);
-      max-width: 700px;
+      max-width: 800px;
       margin-bottom: 48px;
     }
 
@@ -195,6 +195,10 @@
       flex-wrap: wrap;
       gap: 8px;
       margin-bottom: 60px;
+    }
+
+    .project-tags--meta {
+      margin-bottom: 16px;
     }
 
     .tag {
@@ -218,6 +222,17 @@
       background: rgba(255, 255, 255, 0.08);
     }
 
+    .tag--static {
+      transition: none;
+      cursor: default;
+    }
+
+    .tag--static:hover {
+      color: var(--tag-ink);
+      border-color: transparent;
+      background: var(--tag-bg);
+    }
+
     .tag.featured {
       background: var(--red-dim);
       color: var(--red);
@@ -229,15 +244,60 @@
       border-color: var(--red);
     }
 
+    .tag.featured.tag--static:hover {
+      color: var(--red);
+      border-color: rgba(232, 57, 42, 0.2);
+      background: var(--red-dim);
+    }
+
     /* ── Content Sections ── */
     .section {
-      margin-bottom: 120px;
+      position: relative;
+      margin-bottom: 60px;
+      padding-top: 28px;
+      --section-accent: var(--blue);
+    }
+
+    .section::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), var(--section-accent), rgba(255, 255, 255, 0.08), transparent);
+      box-shadow: 0 0 12px color-mix(in srgb, var(--section-accent) 35%, transparent);
+      pointer-events: none;
+    }
+
+    .section:nth-of-type(6n + 1) {
+      --section-accent: #ff4d6d;
+    }
+
+    .section:nth-of-type(6n + 2) {
+      --section-accent: #2d6ef5;
+    }
+
+    .section:nth-of-type(6n + 3) {
+      --section-accent: #20c997;
+    }
+
+    .section:nth-of-type(6n + 4) {
+      --section-accent: #f59f00;
+    }
+
+    .section:nth-of-type(6n + 5) {
+      --section-accent: #a855f7;
+    }
+
+    .section:nth-of-type(6n + 6) {
+      --section-accent: #ff6b35;
     }
 
     .section-title {
       font-family: 'Instrument Serif', serif;
       font-size: 2.4rem;
-      margin-bottom: 48px;
+      margin-bottom: 24px;
       color: var(--ink);
       font-weight: 400;
       letter-spacing: -0.01em;
@@ -258,7 +318,7 @@
     }
 
     .prose p {
-      margin-bottom: 20px;
+      margin-bottom: 4px;
     }
 
     .video-embed {
@@ -369,7 +429,15 @@
       padding: 0 12px;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 0;
+    }
+
+    .card-column>*+* {
+      margin-top: 24px;
+    }
+
+    .card-column>.content-card--prose+* {
+      margin-top: 20px;
     }
 
     .card-column--pct {
@@ -436,6 +504,10 @@
       padding: 28px 28px 0;
       margin-bottom: 40px;
       gap: 16px;
+    }
+
+    .card-column>.content-card--prose {
+      margin-bottom: 0;
     }
 
     /* .content-card--prose::after {
@@ -755,28 +827,23 @@
   <main>
     <!-- Header Section -->
     <header class="project-header">
-      <div class="project-meta">
-        <span>2026</span>
-        <span class="project-dot"></span>
-        <span>Unity 6000</span>
+      <div class="project-tags project-tags--meta">
+        <span class="tag featured tag--static">2026</span>
+        <span class="tag featured tag--static">Unity 6000</span>
+        <span class="tag tag--static">C#</span>
+        <span class="tag tag--static">HLSL</span>
+        <span class="tag tag--static">Real-time Rendering</span>
       </div>
       <h1 class="project-title">Papercraft Unity Render Pipeline</h1>
       <p class="project-description">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore
-        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+        A lightweight custom render pipeline for Unity focused on a papercraft diorama art style.
       </p>
-      <div class="project-tags">
-        <span class="tag featured">Unity 6000</span>
-        <span class="tag">C#</span>
-        <span class="tag">HLSL</span>
-        <span class="tag">Real-time Rendering</span>
-        <!-- <a href="#" class="tag" target="_blank" rel="noopener">
+      <!-- <a href="#" class="tag" target="_blank" rel="noopener">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 .3A12 12 0 0 0 0 12.3c0 5.27 3.44 9.74 8.2 11.32.6.1.82-.26.82-.58v-2.04c-3.34.72-4.04-1.6-4.04-1.6-.54-1.38-1.33-1.74-1.33-1.74-1.08-.74.08-.73.08-.73 1.2.09 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.48 1 .1-.77.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.23-3.22-.13-.3-.53-1.52.12-3.17 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02.005 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.65 1.65.25 2.87.12 3.17.77.84 1.23 1.9 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 24 12.3 12 12 0 0 0 12 .3z" />
           </svg>
           GitHub
         </a> -->
-      </div>
     </header>
 
     <!-- Overview Section -->
@@ -793,10 +860,6 @@
           challenges, but ultimately allowed for a lighter weight rendering solution focused solely on the effects
           needed for the Papercraft style, including custom shadow textures, drop shadows between objects, and paper
           texture overlays.
-        </p>
-        <p>
-          Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem
-          aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
         </p>
       </div>
     </section>
@@ -839,21 +902,36 @@
 
 
     <section class="section">
-      <h2 class="section-title">Implementation Details</h2>
+      <h2 class="section-title">Pipeline Implementation</h2>
       <div class="prose content-card content-card--prose">
         <p>
-          One of the main goals for the render pipeline was to create something scalable and lightweight, and easily
-          configurable. For unity SRPs this begins with the render pipline asset, which is where global settings for the
-          render pipeline instance live. I decided to have the main structure be a list of "Render Passes", which are in
-          themselves unity ScriptableObjects, allowing them to be be added, removed, and configured from the editor once
-          implemented.
+          One of the main goals for the render pipeline was to create something scalable, lightweight, and easily
+          configurable. These design goals led to my implementation having three distinct parts: the Render Pipeline
+          Asset,
+          the Render Pipeline Instance, and a list of individually configurable Render Passes. This 3-part approach is
+          fairly standard for custom render pipelines in Unity due to the underlying RenderGraph API.
+          The RenderGraph defines certain things about the passes it expects so that it can automatically handle
+          transient resources and syncronization.
         </p>
+        <p></p>
+      </div>
+
+      <h3 class="section-subtitle">Render Pipeline Asset</h3>
+
+      <div class="prose content-card content-card--prose">
         <p>
+          The simplest of the 3 main parts of a typical unity SRP is the Pipeline Asset, it is main unity asset that
+          handles high level configuration for the entire
+          renderer pipeline. This includes general settings and the list of render passes that should be executed each
+          frame. The Pipeline Asset mainly exists to wrap the Pipeline Instance, to allow for multiple pipelines to be
+          created with different settings and pass lists for debugging or to be used for diffenret styles in different
+          scenes or platforms.
+        </p>
+        <p></p>
       </div>
 
       <div class="card-columns">
-
-        <div class="card-column card-column--pct card-column--leftmost" style="--column-width: 68%;">
+        <div class="card-column card-column--pct card-column--leftmost" style="--column-width: 60%;">
           <!-- Column 1: Code Card -->
           <div class="code-card content-card content-card--code">
             <div class="code-header">
@@ -901,7 +979,7 @@
         </div>
 
         <!-- Column 2: Image Cards -->
-        <div class="card-column card-column--pct card-column--rightmost" style="--column-width: 32%;">
+        <div class="card-column card-column--pct card-column--rightmost" style="--column-width: 40%;">
           <div class="gallery-card content-card content-card--image">
             <div class="gallery-card-image">
               <img src="Images/SRPconfig.png" alt="A screenshot of a unity window showing a configured SRP asset">
@@ -912,17 +990,195 @@
             </div>
           </div>
 
+
+        </div>
+      </div>
+
+      <h3 class="section-subtitle">Render Pipeline Instance</h3>
+
+      <div class="prose content-card content-card--prose">
+        <p>
+          In my implementation, the Render Pipeline Instance's main role is holding on to all of the information that
+          passes would need frame-to-frame and making it easily avaiable to passes when they execute. This information
+          includes the main "RendererList", which includes all of the geometry that needs to be rendered after camera
+          frustum culling, handles to all of the render targets we intend to use, and some other miscellaneous setup
+          info.
+        </p>
+        <p></p>
+      </div>
+
+      <div class="card-columns">
+        <div class="card-column card-column--pct card-column--leftmost" style="--column-width: 69%;">
+          <div class="code-card content-card content-card--code">
+            <div class="code-header">
+              <div>
+                <span class="code-language">C#</span>
+                <span class="code-label">TrashRenderPipelineAsset.cs</span>
+              </div>
+              <div class="code-traffic-lights">
+                <div class="traffic-light red"></div>
+                <div class="traffic-light yellow"></div>
+                <div class="traffic-light green"></div>
+              </div>
+            </div>
+            <div class="code-body">
+              <!-- HTML generated using hilite.me -->
+              <div overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+                <pre style="margin: 0; line-height: 125%;"><span></span><span style="color: #C678DD">private</span><span style="color: #ABB2BF"> </span><span style="color: #C678DD">void</span><span style="color: #ABB2BF"> </span><span style="color: #61AFEF; font-weight: bold">SetUpRendererLists</span><span style="color: #ABB2BF">(</span><span style="color: #E06C75">ScriptableRenderContext</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">context</span><span style="color: #ABB2BF">)</span>
+<span style="color: #ABB2BF">{</span>
+<span style="color: #ABB2BF">  </span><span style="color: #7F848E">//Only one light mode tag for everything for now</span>
+<span style="color: #ABB2BF">  </span><span style="color: #E06C75">ShaderTagId</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">shaderTagId</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #C678DD">new</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">ShaderTagId</span><span style="color: #ABB2BF">(</span><span style="color: #98C379">&quot;LightModeAll&quot;</span><span style="color: #ABB2BF">);</span>
+
+<span style="color: #ABB2BF">  </span><span style="color: #7F848E">//Set up settings for drawing all of the geometry in the scene</span>
+<span style="color: #ABB2BF">  </span><span style="color: #7F848E">//with the simple built-in sorting and no filtering</span>
+<span style="color: #ABB2BF">  </span><span style="color: #E5C07B">var</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">sortingSettings</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #C678DD">new</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">SortingSettings</span><span style="color: #ABB2BF">(</span><span style="color: #E06C75">currentCamera</span><span style="color: #ABB2BF">);</span>
+<span style="color: #ABB2BF">  </span><span style="color: #E06C75">DrawingSettings</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">drawingSettings</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #C678DD">new</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">DrawingSettings</span><span style="color: #ABB2BF">(</span><span style="color: #E06C75">shaderTagId</span><span style="color: #ABB2BF">, </span><span style="color: #E06C75">sortingSettings</span><span style="color: #ABB2BF">);</span>
+<span style="color: #ABB2BF">  </span><span style="color: #E06C75">FilteringSettings</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">filteringSettings</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #C678DD">new</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">FilteringSettings</span><span style="color: #ABB2BF">(</span><span style="color: #E06C75">RenderQueueRange</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">all</span><span style="color: #ABB2BF">);</span>
+
+<span style="color: #ABB2BF">  </span><span style="color: #7F848E">// UI + unlit objects</span>
+<span style="color: #ABB2BF">  </span><span style="color: #E5C07B">var</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">uiTag</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #C678DD">new</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">ShaderTagId</span><span style="color: #ABB2BF">(</span><span style="color: #98C379">&quot;UI_Unlit&quot;</span><span style="color: #ABB2BF">);</span>
+<span style="color: #ABB2BF">  </span><span style="color: #E06C75">drawingSettings</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">SetShaderPassName</span><span style="color: #ABB2BF">(</span><span style="color: #D19A66">1</span><span style="color: #ABB2BF">, </span><span style="color: #E06C75">uiTag</span><span style="color: #ABB2BF">);</span>
+
+<span style="color: #ABB2BF">  </span><span style="color: #7F848E">//let unity do camera culling.</span>
+<span style="color: #ABB2BF">  </span><span style="color: #E06C75">currentCamera</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">TryGetCullingParameters</span><span style="color: #ABB2BF">(</span><span style="color: #C678DD">out</span><span style="color: #ABB2BF"> </span><span style="color: #E5C07B">var</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">cullingParameters</span><span style="color: #ABB2BF">);</span>
+<span style="color: #ABB2BF">  </span><span style="color: #E06C75">cullingParameters</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">shadowDistance</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">_PipelineAsset</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">shadowDistance</span><span style="color: #ABB2BF">;</span>
+<span style="color: #ABB2BF">  </span><span style="color: #E06C75">cullingResults</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">context</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">Cull</span><span style="color: #ABB2BF">(</span><span style="color: #C678DD">ref</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">cullingParameters</span><span style="color: #ABB2BF">);</span>
+
+<span style="color: #ABB2BF">  </span><span style="color: #7F848E">//get the final list of all </span>
+<span style="color: #ABB2BF">  </span><span style="color: #E06C75">RendererListParams</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">param</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #C678DD">new</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">RendererListParams</span><span style="color: #ABB2BF">(</span><span style="color: #E06C75">cullingResults</span><span style="color: #ABB2BF">, </span><span style="color: #E06C75">drawingSettings</span><span style="color: #ABB2BF">, </span><span style="color: #E06C75">filteringSettings</span><span style="color: #ABB2BF">);</span>
+<span style="color: #ABB2BF">  </span><span style="color: #E06C75">rendererListAllGeometry</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">context</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">CreateRendererList</span><span style="color: #ABB2BF">(</span><span style="color: #C678DD">ref</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">param</span><span style="color: #ABB2BF">);</span>
+<span style="color: #ABB2BF">}</span>
+</pre>
+              </div>
+            </div>
+            <div class="code-description">
+              <p>Render pipeline asset responsible for holding settings and initializing pipeline instance.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-column card-column--pct card-column--rightmost" style="--column-width: 31%;">
+          <div class="prose content-card content-card--prose">
+            <p>
+              I only ended up needing one rendererlist for this project, so all of my shaders use the same
+              "LightModeAll" tag and are drawn together.
+            </p>
+            <p>
+              However, here in the RenderPipeline instance is where you could also set up several renderer lists with
+              different light mode tags in order
+              to give the render passes more granular control over how to draw different objects and when.
+            </p>
+            <p></p>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="section-subtitle">Render Passes</h3>
+      <div class="card-columns">
+        <div class="card-column card-column--pct card-column--leftmost" style="--column-width: 50%;">
+          <div class="prose content-card content-card--prose">
+            <p>
+              The render passes are where actual draw calls happen, in my implementation they are objects with 2 primary
+              functions, "Request", and "Execute".
+              "Request" is where the pass specifies what resources it will access, and store any information
+              it needs for the execution phase in a generic data container that gets managed by the Pipeline
+              Instance/RenderGraph.
+              "Execute" is where the pass accesses the resources it specified to do the gpu work is was designed to do
+              via a unity
+              GraphContext, again managed by the Pipeline Instance/RenderGraph.
+            </p>
+            <p>
+              My version of render passes are created as ScriptableObjects for easier configuration and reuse. Any to
+              non-geomtry data they
+              need, i.e. compute shaders, full screen materials, etc, can be created as fields and assigned in editor.
+            </p>
+            <p></p>
+          </div>
+
           <div class="gallery-card content-card content-card--image">
             <div class="gallery-card-image">
               <img src="Images/JFAconfig.png" alt="A screenshot of a unity window showing a configured SRP asset">
             </div>
             <div class="gallery-card-label">
               <h3>Render Pass Configuration</h3>
-              <p>An example of a configured render pass for computing a vornoi distance field for drop shadow effects.</p>
+              <p>An example of a configured render pass for computing a vornoi distance field via the Jump Flood
+                Algorithm.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-column card-column--pct card-column--rightmost" style="--column-width: 50%;">
+          <div class="code-card content-card content-card--code">
+            <div class="code-header">
+              <div>
+                <span class="code-language">C#</span>
+                <span class="code-label">TrashRenderPipelineAsset.cs</span>
+              </div>
+              <div class="code-traffic-lights">
+                <div class="traffic-light red"></div>
+                <div class="traffic-light yellow"></div>
+                <div class="traffic-light green"></div>
+              </div>
+            </div>
+            <div class="code-body">
+              <!-- HTML generated using hilite.me -->
+              <div overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+                <pre style="margin: 0; line-height: 125%;"><span></span><span style="color: #E06C75">[CreateAssetMenu(fileName = &quot;GeometryPass&quot;, menuName = &quot;TrashPasses/GeometryPass&quot;)]</span>
+<span style="color: #C678DD">public</span><span style="color: #ABB2BF"> </span><span style="color: #C678DD">class</span><span style="color: #ABB2BF"> </span><span style="color: #E5C07B">GeometryPass</span><span style="color: #ABB2BF"> : </span><span style="color: #E06C75">TrashRasterPass</span><span style="color: #56B6C2">&lt;</span><span style="color: #E06C75">GeometryPass</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">GeometryPassData</span><span style="color: #56B6C2">&gt;</span>
+<span style="color: #ABB2BF">{</span>
+<span style="color: #ABB2BF">  </span><span style="color: #C678DD">public</span><span style="color: #ABB2BF"> </span><span style="color: #C678DD">override</span><span style="color: #ABB2BF"> </span><span style="color: #E5C07B">bool</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">IsPostProcessPass</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=&gt;</span><span style="color: #ABB2BF"> </span><span style="color: #C678DD">false</span><span style="color: #ABB2BF">;</span>
+
+<span style="color: #ABB2BF">  </span><span style="color: #C678DD">public</span><span style="color: #ABB2BF"> </span><span style="color: #C678DD">class</span><span style="color: #ABB2BF"> </span><span style="color: #E5C07B">GeometryPassData</span><span style="color: #ABB2BF"> : </span><span style="color: #E06C75">PassData</span>
+<span style="color: #ABB2BF">  {</span>
+<span style="color: #ABB2BF">    </span><span style="color: #C678DD">public</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">RendererList</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">rendererList</span><span style="color: #ABB2BF">;</span>
+<span style="color: #ABB2BF">    </span><span style="color: #C678DD">public</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">TrashRenderPipelineInstance</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">ShadowInfo</span><span style="color: #ABB2BF">[] </span><span style="color: #E06C75">shadowInfos</span><span style="color: #ABB2BF">;</span>
+<span style="color: #ABB2BF">  }</span>
+
+<span style="color: #ABB2BF">  </span><span style="color: #C678DD">public</span><span style="color: #ABB2BF"> </span><span style="color: #C678DD">override</span><span style="color: #ABB2BF"> </span><span style="color: #C678DD">void</span><span style="color: #ABB2BF"> </span><span style="color: #61AFEF; font-weight: bold">RequestData</span><span style="color: #ABB2BF">(</span>
+<span style="color: #ABB2BF">  </span><span style="color: #E06C75">RenderGraph</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">renderGraph</span><span style="color: #ABB2BF">, </span>
+<span style="color: #ABB2BF">  </span><span style="color: #E06C75">GeometryPassData</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">data</span><span style="color: #ABB2BF">, </span>
+<span style="color: #ABB2BF">  </span><span style="color: #E06C75">TrashRenderPipelineInstance</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">instance</span><span style="color: #ABB2BF">, </span>
+<span style="color: #ABB2BF">  </span><span style="color: #E06C75">IRasterRenderGraphBuilder</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">builder</span><span style="color: #ABB2BF">)</span>
+<span style="color: #ABB2BF">  {</span>
+<span style="color: #ABB2BF">    </span><span style="color: #7F848E">//settings</span>
+<span style="color: #ABB2BF">    </span><span style="color: #E06C75">builder</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">AllowPassCulling</span><span style="color: #ABB2BF">(</span><span style="color: #C678DD">false</span><span style="color: #ABB2BF">);</span>
+<span style="color: #ABB2BF">    </span><span style="color: #E06C75">builder</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">AllowGlobalStateModification</span><span style="color: #ABB2BF">(</span><span style="color: #C678DD">true</span><span style="color: #ABB2BF">);</span>
+
+<span style="color: #ABB2BF">    </span><span style="color: #E06C75">data</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">rendererList</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">instance</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">rendererListAllGeometry</span><span style="color: #ABB2BF">;</span>
+<span style="color: #ABB2BF">    </span><span style="color: #E06C75">data</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">shadowInfos</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">instance</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">shadowInfos</span><span style="color: #ABB2BF">;</span>
+
+<span style="color: #ABB2BF">    </span><span style="color: #7F848E">//render to scene texture and stencil buffer</span>
+<span style="color: #ABB2BF">    </span><span style="color: #E06C75">builder</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">SetRenderAttachment</span><span style="color: #ABB2BF">(</span><span style="color: #E06C75">instance</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">SceneTexHandle</span><span style="color: #ABB2BF">, </span><span style="color: #D19A66">0</span><span style="color: #ABB2BF">, </span><span style="color: #E06C75">AccessFlags</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">Write</span><span style="color: #ABB2BF">);</span>
+<span style="color: #ABB2BF">    </span><span style="color: #E06C75">builder</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">SetRenderAttachment</span><span style="color: #ABB2BF">(</span><span style="color: #E06C75">instance</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">StencilBufferHandle</span><span style="color: #ABB2BF">, </span><span style="color: #D19A66">1</span><span style="color: #ABB2BF">, </span><span style="color: #E06C75">AccessFlags</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">Write</span><span style="color: #ABB2BF">);</span>
+
+<span style="color: #ABB2BF">    </span><span style="color: #7F848E">//read from shadow maps rendered in previous passs</span>
+<span style="color: #ABB2BF">    </span><span style="color: #E06C75">builder</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">UseTexture</span><span style="color: #ABB2BF">(</span><span style="color: #E06C75">instance</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">shadowMapArrayHandle</span><span style="color: #ABB2BF">, </span><span style="color: #E06C75">AccessFlags</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">Read</span><span style="color: #ABB2BF">);</span>
+<span style="color: #ABB2BF">  }</span>
+
+<span style="color: #ABB2BF">  </span><span style="color: #C678DD">public</span><span style="color: #ABB2BF"> </span><span style="color: #C678DD">override</span><span style="color: #ABB2BF"> </span><span style="color: #C678DD">void</span><span style="color: #ABB2BF"> </span><span style="color: #61AFEF; font-weight: bold">Execute</span><span style="color: #ABB2BF">(</span><span style="color: #E06C75">GeometryPassData</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">data</span><span style="color: #ABB2BF">, </span><span style="color: #E06C75">RasterGraphContext</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">RGcontext</span><span style="color: #ABB2BF">) </span>
+<span style="color: #ABB2BF">  {</span>
+<span style="color: #ABB2BF">    </span><span style="color: #E06C75">RasterCommandBuffer</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">cmd</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">RGcontext</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">cmd</span><span style="color: #ABB2BF">;</span>
+<span style="color: #ABB2BF">    </span><span style="color: #E06C75">cmd</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">SetViewProjectionMatrices</span><span style="color: #ABB2BF">(</span><span style="color: #E06C75">data</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">camera</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">worldToCameraMatrix</span><span style="color: #ABB2BF">,</span>
+<span style="color: #ABB2BF">                                  </span><span style="color: #E06C75">data</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">camera</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">projectionMatrix</span><span style="color: #ABB2BF">);</span>
+<span style="color: #ABB2BF">    </span><span style="color: #E06C75">cmd</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">DrawRendererList</span><span style="color: #ABB2BF">(</span><span style="color: #E06C75">data</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">rendererList</span><span style="color: #ABB2BF">);</span>
+<span style="color: #ABB2BF">  }</span>
+<span style="color: #ABB2BF">}</span>
+</pre>
+              </div>
+
+            </div>
+            <div class="code-description">
+              <p>Render pipeline asset responsible for holding settings and initializing pipeline instance.</p>
             </div>
           </div>
         </div>
       </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Stylization</h2>
+      Key aspects of vis style - Cel shading, Screenspace texturing, custom shadow texturing, JFA/drop shadows
+
     </section>
 
     <!-- Gallery Section -->
