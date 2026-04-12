@@ -22,7 +22,7 @@
     :root {
       --bg: #0e0f11;
       --surface: #16181c;
-      --surface-2: #1e2027;
+      --surface-2: #120a14;
       --ink: #f0f1f4;
       --ink-muted: #7a7f8e;
       --red: #e8392a;
@@ -50,6 +50,10 @@
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
       padding-top: 72px;
+    }
+
+    .link {
+      color: var(--red);
     }
 
     /* ── Navbar ── */
@@ -212,7 +216,7 @@
       transform: translateY(-6.5px) rotate(-45deg);
     }
 
-        /* Mobile drawer */
+    /* Mobile drawer */
     .nav-drawer {
       display: none;
       position: fixed;
@@ -274,13 +278,39 @@
     }
 
     @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .nav-hamburger { display: flex; }
-      .nav-name { font-size: 0; }
-      .nav-name::before { content: "J"; font-size: 2.3rem; color: var(--blue); }
-      .nav-name w {content: "M"; font-size: 2.3rem; }
-      .nav-name span { display: none; }
-      .nav-name::after { content: "L"; font-size: 2.3rem; color: var(--red); margin-left: -0.05em; }
+      .nav-links {
+        display: none;
+      }
+
+      .nav-hamburger {
+        display: flex;
+      }
+
+      .nav-name {
+        font-size: 0;
+      }
+
+      .nav-name::before {
+        content: "J";
+        font-size: 2.3rem;
+        color: var(--blue);
+      }
+
+      .nav-name w {
+        content: "M";
+        font-size: 2.3rem;
+      }
+
+      .nav-name span {
+        display: none;
+      }
+
+      .nav-name::after {
+        content: "L";
+        font-size: 2.3rem;
+        color: var(--red);
+        margin-left: -0.05em;
+      }
     }
 
     /* ── Main Content ── */
@@ -448,10 +478,16 @@
     }
 
     .section-subtitle {
-      font-size: 20px;
-      font-weight: 500;
-      margin-bottom: 24px;
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(1.55rem, 2vw, 1.9rem);
+      line-height: 1.2;
+      font-weight: 400;
+      margin: 8px 0 22px;
+      padding-left: 16px;
+      border-left: 3px solid color-mix(in srgb, var(--section-accent) 75%, white 25%);
       color: var(--ink);
+      letter-spacing: -0.01em;
+      text-wrap: balance;
     }
 
     .prose {
@@ -644,6 +680,7 @@
     .content-card--prose {
       --card-accent: var(--blue);
       --card-surface: var(--surface-2);
+      color: var(--ink-muted);
       max-width: none;
       padding: 28px 28px 0;
       margin-bottom: 40px;
@@ -964,6 +1001,12 @@
         font-size: 1.8rem;
       }
 
+      .section-subtitle {
+        font-size: 1.4rem;
+        padding-left: 12px;
+        margin-bottom: 18px;
+      }
+
       .gallery-grid,
       .code-snippets {
         grid-template-columns: 1fr;
@@ -1110,10 +1153,10 @@
       Download Résumé
     </a>
   </div>
-<!-- Main Content -->
+  <!-- Main Content -->
   <main>
     <!-- Header Section -->
-    <header class="project-header", id="page-top">
+    <header class="project-header" , id="page-top">
       <div class="project-tags project-tags--meta">
         <span class="tag featured tag--static">2026</span>
         <span class="tag featured tag--static">Unity 6000</span>
@@ -1159,14 +1202,16 @@
       <h2 class="section-title">References</h2>
       <div class="prose">
         <p>
-          The art style for this project was inspired by the below rendering projects on YouTube, in particulal the use
-          of custom shadow textures from <a href="https://www.youtube.com/@uselessgamedev" target="_blank"
+          The art style for this partially inspired by these rendering projects on YouTube, in particulal the use
+          of custom shadow textures from <a class="link" href="https://www.youtube.com/@uselessgamedev" target="_blank"
             rel="noopener noreferrer">Useless Game Dev</a>.
         </p>
         <p>
           The main technical reference for the technical implementation of the render pipeline was Jasper Flick's <a
-            href="https://catlikecoding.com/unity/custom-srp/" target="_blank" rel="noopener noreferrer">Catlike Coding
-            Custom SRP</a>, in I found his implementations for shadow mapping and getting renderer lists very helpful.
+            class="link" href="https://catlikecoding.com/unity/custom-srp/" target="_blank"
+            rel="noopener noreferrer">Catlike Coding
+            Custom SRP</a>, in particular I found his implementations for shadow mapping and getting renderer lists very
+          helpful.
         </p>
 
         <div class="video-embed-grid">
@@ -1470,16 +1515,17 @@
 
       <!-- Key aspects of vis style - Cel shading, Screenspace texturing, custom shadow texturing, JFA/drop shadows -->
 
-      <div class="prose content-card content-card--prose">
-        <p>
-          The visual style for this project's renderer comes from 4 main features it implements: cel shading,
-          screenspace texturing, custom shadow texturing, and drop shadows between regions.
-        </p>
-        <p></p>
+
+
+      <div class="prose">
+        The visual style for this project's renderer comes from 4 main features it implements: cel shading,
+        screenspace texturing, custom shadow texturing, and drop shadows between regions. These techniques
+        each add a diffenerent element of what makes seomthing look more analog.
       </div>
 
 
-      <h3> Cel shading</h3>
+
+      <h3 class="section-subtitle"> Cel shading</h3>
       <div class="card-columns">
         <div class="card-column card-column--pct card-column--leftmost" style="--column-width: 40%;">
 
@@ -1547,7 +1593,7 @@
 
 
 
-            <h3> Screenspace texturing</h3>
+      <h3 class="section-subtitle"> Screenspace texturing</h3>
       <div class="card-columns">
         <div class="card-column card-column--pct card-column--leftmost" style="--column-width: 50%;">
 
@@ -1555,7 +1601,7 @@
             <div class="code-header">
               <div>
                 <span class="code-language">HLSL</span>
-                <span class="code-label">JFA-Pass.hlsl</span>
+                <span class="code-label">Lit.hlsl</span>
               </div>
               <div class="code-traffic-lights">
                 <div class="traffic-light red"></div>
@@ -1617,8 +1663,8 @@
               <img src="Images/ScreenSpaceTex.gif">
             </div>
             <div class="gallery-card-label">
-              <h3>Final Result</h3>
-              <p>The final image rendered with the Drop shadow effect</p>
+              <h3>Animated Screen Space Texturing</h3>
+              <p>Animating Screen UVs at low FPS can help with creating a stop-motion effect</p>
             </div>
           </div>
 
@@ -1626,7 +1672,7 @@
       </div>
 
 
-      <h3> Shadow Texturing</h3>
+      <h3 class="section-subtitle"> Shadow Texturing</h3>
       <div class="card-columns">
         <div class="card-column card-column--pct card-column--leftmost" style="--column-width: 50%;">
 
@@ -1649,7 +1695,7 @@
             <div class="code-header">
               <div>
                 <span class="code-language">HLSL</span>
-                <span class="code-label">JFA-Pass.hlsl</span>
+                <span class="code-label">Lit.hlsl</span>
               </div>
               <div class="code-traffic-lights">
                 <div class="traffic-light red"></div>
@@ -1658,7 +1704,9 @@
               </div>
             </div>
             <div class="code-body">
-<!-- HTML generated using hilite.me --><div overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%;"><span></span><span style="color: #E06C75">vert2frag</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">vert</span><span style="color: #ABB2BF"> (</span><span style="color: #E06C75">Attributes</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">IN</span><span style="color: #ABB2BF">)</span>
+              <!-- HTML generated using hilite.me -->
+              <div overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+                <pre style="margin: 0; line-height: 125%;"><span></span><span style="color: #E06C75">vert2frag</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">vert</span><span style="color: #ABB2BF"> (</span><span style="color: #E06C75">Attributes</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">IN</span><span style="color: #ABB2BF">)</span>
 <span style="color: #ABB2BF">{</span>
 <span style="color: #ABB2BF">  </span><span style="color: #7F848E">//...</span>
 
@@ -1705,7 +1753,8 @@
 
 <span style="color: #ABB2BF">  </span><span style="color: #7F848E">//...</span>
 <span style="color: #ABB2BF">}</span>
-</pre></div>
+</pre>
+              </div>
 
 
 
@@ -1722,7 +1771,7 @@
             <div class="code-header">
               <div>
                 <span class="code-language">HLSL</span>
-                <span class="code-label">JFA-Pass.hlsl</span>
+                <span class="code-label">TrashShadows.hlsl</span>
               </div>
               <div class="code-traffic-lights">
                 <div class="traffic-light red"></div>
@@ -1731,7 +1780,9 @@
               </div>
             </div>
             <div class="code-body">
-<!-- HTML generated using hilite.me --><div overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%;"><span></span><span style="color: #E5C07B">float</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">GetShadowValue</span><span style="color: #ABB2BF">(</span><span style="color: #E5C07B">float4</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">shadowClipPos</span><span style="color: #ABB2BF">, </span><span style="color: #E5C07B">int</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">lightIndex</span><span style="color: #ABB2BF">, </span><span style="color: #E5C07B">float2</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">uv</span><span style="color: #ABB2BF">, </span><span style="color: #E5C07B">float</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">bias</span><span style="color: #ABB2BF">)</span>
+              <!-- HTML generated using hilite.me -->
+              <div overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+                <pre style="margin: 0; line-height: 125%;"><span></span><span style="color: #E5C07B">float</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">GetShadowValue</span><span style="color: #ABB2BF">(</span><span style="color: #E5C07B">float4</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">shadowClipPos</span><span style="color: #ABB2BF">, </span><span style="color: #E5C07B">int</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">lightIndex</span><span style="color: #ABB2BF">, </span><span style="color: #E5C07B">float2</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">uv</span><span style="color: #ABB2BF">, </span><span style="color: #E5C07B">float</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">bias</span><span style="color: #ABB2BF">)</span>
 <span style="color: #ABB2BF">{</span>
 <span style="color: #ABB2BF">  </span><span style="color: #E5C07B">float3</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">shadowNDC</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">shadowClipPos</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">xyz</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">/</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">shadowClipPos</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">w</span><span style="color: #ABB2BF">;</span>
 <span style="color: #ABB2BF">  </span><span style="color: #E5C07B">float2</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">shadowUV</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">shadowNDC</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">xy</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">*</span><span style="color: #ABB2BF"> </span><span style="color: #D19A66">0.5</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">+</span><span style="color: #ABB2BF"> </span><span style="color: #D19A66">0.5</span><span style="color: #ABB2BF">;</span>
@@ -1756,7 +1807,8 @@
 
 <span style="color: #ABB2BF">  </span><span style="color: #C678DD">return</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">shadow</span><span style="color: #ABB2BF">;</span>
 <span style="color: #ABB2BF">}</span>
-</pre></div>
+</pre>
+              </div>
 
 
 
@@ -1772,8 +1824,8 @@
               <img src="Images/ShadowDetail.gif">
             </div>
             <div class="gallery-card-label">
-              <h3>Final Result</h3>
-              <p>The final image rendered with the Drop shadow effect</p>
+              <h3>Scribble Shadows</h3>
+              <p>For a hastily put together look</p>
             </div>
           </div>
 
@@ -1782,7 +1834,7 @@
 
 
 
-      <h3> Drop Shadows</h3>
+      <h3 class="section-subtitle"> Drop Shadows</h3>
       <div class="prose content-card content-card--prose">
         <p>
           Sampling textures in screen space instead of UV space helps make the scene look more like stacked pieces
@@ -2039,7 +2091,7 @@
         </div> <!-- Right column -->
       </div>
 
-      <div class="gallery-card content-card content-card--image", id="final-stylized-look">
+      <div class="gallery-card content-card content-card--image" , id="final-stylized-look">
         <div class="gallery-card-image">
           <video autoplay loop muted playsinline preload="metadata" aria-label="Final result video">
             <source src="Images/FinalOut.mp4" type="video/mp4">
@@ -2143,7 +2195,7 @@
 
     window.addEventListener('scroll', () => {
       const currentScrollY = window.scrollY;
-      
+
       // Hide navbar when scrolling down, show when scrolling up
       if (currentScrollY > lastScrollY + 5) {
         // Scrolling down
@@ -2152,11 +2204,10 @@
         // Scrolling up
         navbar.classList.remove('hidden');
       }
-      
+
       lastScrollY = currentScrollY;
     }, { passive: true });
   </script>
 </body>
 
 </html>
-
