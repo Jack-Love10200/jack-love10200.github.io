@@ -67,6 +67,11 @@
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
+      transition: transform 0.3s ease;
+    }
+
+    .navbar.hidden {
+      transform: translateY(-100%);
     }
 
     /* Name — left */
@@ -2115,6 +2120,7 @@
   <script>
     const btn = document.getElementById('hamburger');
     const drawer = document.getElementById('drawer');
+    const navbar = document.querySelector('.navbar');
 
     if (btn && drawer) {
       btn.addEventListener('click', () => {
@@ -2130,6 +2136,25 @@
         });
       });
     }
+
+    // Navbar hide on scroll
+    let lastScrollY = 0;
+    let isScrolling = false;
+
+    window.addEventListener('scroll', () => {
+      const currentScrollY = window.scrollY;
+      
+      // Hide navbar when scrolling down, show when scrolling up
+      if (currentScrollY > lastScrollY + 5) {
+        // Scrolling down
+        navbar.classList.add('hidden');
+      } else if (currentScrollY < lastScrollY - 5) {
+        // Scrolling up
+        navbar.classList.remove('hidden');
+      }
+      
+      lastScrollY = currentScrollY;
+    }, { passive: true });
   </script>
 </body>
 

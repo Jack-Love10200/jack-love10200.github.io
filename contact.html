@@ -54,6 +54,11 @@
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
+      transition: transform 0.3s ease;
+    }
+
+    .navbar.hidden {
+      transform: translateY(-100%);
     }
 
     .nav-name {
@@ -801,6 +806,26 @@
         });
       });
     }
+
+    // Navbar hide on scroll
+    const navbar = document.querySelector('.navbar');
+    let lastScrollY = 0;
+    let isScrolling = false;
+
+    window.addEventListener('scroll', () => {
+      const currentScrollY = window.scrollY;
+      
+      // Hide navbar when scrolling down, show when scrolling up
+      if (currentScrollY > lastScrollY + 5) {
+        // Scrolling down
+        navbar.classList.add('hidden');
+      } else if (currentScrollY < lastScrollY - 5) {
+        // Scrolling up
+        navbar.classList.remove('hidden');
+      }
+      
+      lastScrollY = currentScrollY;
+    }, { passive: true });
 
     // Form handling
     const contactForm = document.getElementById('contactForm');
