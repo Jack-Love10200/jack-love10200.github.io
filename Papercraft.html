@@ -311,7 +311,7 @@
     }
 
     .prose {
-      max-width: 1000px;
+      max-width: 1200px;
       font-size: 16px;
       line-height: 1.8;
       color: var(--ink-muted);
@@ -543,7 +543,7 @@
       position: relative;
     }
 
-    .gallery-card-image:has(img)::after {
+    .gallery-card-image:has(img, video)::after {
       content: '';
       position: absolute;
       left: 0;
@@ -554,13 +554,19 @@
       pointer-events: none;
     }
 
-    .gallery-card-image img {
+    .gallery-card-image img,
+    .gallery-card-image video {
       width: 100%;
       height: auto;
       display: block;
     }
 
-    .gallery-card-image:not(:has(img)) {
+    .gallery-card-image video {
+      object-fit: contain;
+      background: transparent;
+    }
+
+    .gallery-card-image:not(:has(img, video)) {
       background: linear-gradient(135deg, var(--surface) 0%, var(--surface-2) 100%);
       color: var(--ink-muted);
       font-size: 14px;
@@ -903,7 +909,7 @@
 
     <section class="section">
       <h2 class="section-title">Pipeline Implementation</h2>
-      <div class="prose content-card content-card--prose">
+      <div class="prose">
         <p>
           One of the main goals for the render pipeline was to create something scalable, lightweight, and easily
           configurable. These design goals led to my implementation having three distinct parts: the Render Pipeline
@@ -913,7 +919,6 @@
           The RenderGraph defines certain things about the passes it expects so that it can automatically handle
           transient resources and syncronization.
         </p>
-        <p></p>
       </div>
 
       <h3 class="section-subtitle">Render Pipeline Asset</h3>
@@ -1191,7 +1196,7 @@
 
       <h3> Cel shading</h3>
       <div class="card-columns">
-        <div class="card-column card-column--pct card-column--leftmost" style="--column-width: 50%;">
+        <div class="card-column card-column--pct card-column--leftmost" style="--column-width: 40%;">
 
           <div class="code-card content-card content-card--code">
             <div class="code-header">
@@ -1241,10 +1246,10 @@
             </div>
           </div>
         </div>
-        <div class="card-column card-column--rightmost" style="--column-width: 50%;">
+        <div class="card-column card-column--rightmost" style="--column-width: 60%;">
           <div class="gallery-card content-card content-card--image">
             <div class="gallery-card-image">
-              <img src="Images/Placeholder.png" alt="A screenshot of a unity window showing a configured SRP asset">
+              <img src="Images/CelShade.gif" alt="A screenshot of a unity window showing a configured SRP asset">
             </div>
             <div class="gallery-card-label">
               <h3>Cel Shading</h3>
@@ -1255,35 +1260,242 @@
         </div>
       </div>
 
+
+
+            <h3> Screenspace texturing</h3>
+      <div class="card-columns">
+        <div class="card-column card-column--pct card-column--leftmost" style="--column-width: 50%;">
+
+          <div class="code-card content-card content-card--code">
+            <div class="code-header">
+              <div>
+                <span class="code-language">HLSL</span>
+                <span class="code-label">JFA-Pass.hlsl</span>
+              </div>
+              <div class="code-traffic-lights">
+                <div class="traffic-light red"></div>
+                <div class="traffic-light yellow"></div>
+                <div class="traffic-light green"></div>
+              </div>
+            </div>
+            <div class="code-body">
+              <!-- HTML generated using hilite.me -->
+              <div overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+                <pre style="margin: 0; line-height: 125%;"><span></span><span style="color: #E06C75">outputFrag</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">frag</span><span style="color: #ABB2BF"> (</span><span style="color: #E06C75">Varyings</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">IN</span><span style="color: #ABB2BF">)</span>
+<span style="color: #ABB2BF">{</span>
+<span style="color: #ABB2BF">  </span><span style="color: #7F848E">//get the uv of the current pixel in screen space</span>
+<span style="color: #ABB2BF">  </span><span style="color: #7F848E">//from builtin unity uniforms</span>
+<span style="color: #ABB2BF">  </span><span style="color: #E5C07B">float2</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">screenUV</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">IN</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">screenPos</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">xy</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">/</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">IN</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">screenPos</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">w</span><span style="color: #ABB2BF">;</span>
+<span style="color: #ABB2BF">  </span>
+<span style="color: #ABB2BF">  </span><span style="color: #7F848E">//Simple UV animation moving the sample around </span>
+<span style="color: #ABB2BF">  </span><span style="color: #7F848E">//abruptly every few seconds for a choppy effect</span>
+<span style="color: #ABB2BF">  </span><span style="color: #E5C07B">float</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">choppedTime</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #E5C07B">frac</span><span style="color: #ABB2BF">(</span><span style="color: #E06C75">_Time</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">y</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">+</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">_ChopOffset</span><span style="color: #ABB2BF">) </span><span style="color: #56B6C2">*</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">_ChopSpeed</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">/</span><span style="color: #ABB2BF"> </span><span style="color: #D19A66">2.0</span><span style="color: #ABB2BF">;</span>
+<span style="color: #ABB2BF">  </span><span style="color: #E06C75">choppedTime</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #E5C07B">floor</span><span style="color: #ABB2BF">(</span><span style="color: #E06C75">choppedTime</span><span style="color: #ABB2BF">) </span><span style="color: #56B6C2">/</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">_ChopSpeed</span><span style="color: #ABB2BF">;</span>
+<span style="color: #ABB2BF">  </span><span style="color: #E06C75">IN</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">uv</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">+=</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">choppedTime</span><span style="color: #ABB2BF">;</span>
+<span style="color: #ABB2BF">  </span><span style="color: #E5C07B">float2</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">screenUVoffset</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #E5C07B">float2</span><span style="color: #ABB2BF">(</span><span style="color: #D19A66">5</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">*</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">choppedTime</span><span style="color: #ABB2BF">, </span><span style="color: #D19A66">7</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">*</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">choppedTime</span><span style="color: #ABB2BF">);</span>
+<span style="color: #ABB2BF">  </span><span style="color: #E06C75">screenUV</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">+=</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">screenUVoffset</span><span style="color: #ABB2BF">;</span>
+<span style="color: #ABB2BF">  </span>
+<span style="color: #ABB2BF">  </span><span style="color: #7F848E">//Toggle between using screen-space UVs and regular UVs for texture sampling</span>
+<span style="color: #ABB2BF">  </span><span style="color: #7F848E">//useful for debugging issues with shadow UVs or screen-space effects</span>
+<span style="color: #ABB2BF">  </span><span style="color: #E5C07B">float2</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">fragUV</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">_ScreenSpaceSampling</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">?</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">screenUV</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">:</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">IN</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">uv</span><span style="color: #ABB2BF">;</span>
+<span style="color: #ABB2BF">  </span>
+<span style="color: #ABB2BF">  </span><span style="color: #7F848E">//Use our animated screen space UVs whenever sampling textures.</span>
+<span style="color: #ABB2BF">  </span><span style="color: #E06C75">albedo</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">SAMPLE_TEXTURE2D</span><span style="color: #ABB2BF">(</span><span style="color: #E06C75">_MainTex</span><span style="color: #ABB2BF">, </span><span style="color: #E06C75">sampler_MainTex</span><span style="color: #ABB2BF">, </span><span style="color: #E06C75">fragUV</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">*</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">_MainTex_ST</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">xy</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">+</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">_MainTex_ST</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">zw</span><span style="color: #ABB2BF">).</span><span style="color: #E06C75">rgb</span><span style="color: #ABB2BF">;</span>
+<span style="color: #ABB2BF">  </span>
+<span style="color: #ABB2BF">  </span>
+<span style="color: #ABB2BF">  </span><span style="color: #7F848E">//Rest of Fragment Shader...</span>
+<span style="color: #ABB2BF">}</span>
+</pre>
+              </div>
+
+
+            </div>
+            <div class="code-description">
+              <p>JFA Pass incrementally filling in each pixel's closest seed (stencil edge)</p>
+            </div>
+          </div>
+
+        </div> <!-- left -->
+        <div class="card-column card-column--pct card-column--rightmost" style="--column-width: 50%;">
+          <div class="prose content-card content-card--prose">
+            <p>
+              In a papercraft diorama, all of the pieces of paper, cardboard, etc, are going to be fairly close to the
+              camera and their texture would be visible. They wouldn't look look quite like 3d objects each with their
+              own interactions with light, but rather like flat cutouts of paper stacked together. By sampling
+              textures in screen space instead of the regular UV space, we can make everything look a fair bit flatter.
+            </p>
+            <p></p>
+          </div>
+
+          <div class="gallery-card content-card content-card--image">
+            <div class="gallery-card-image">
+              <img src="Images/ScreenSpaceTex.gif">
+            </div>
+            <div class="gallery-card-label">
+              <h3>Final Result</h3>
+              <p>The final image rendered with the Drop shadow effect</p>
+            </div>
+          </div>
+
+        </div> <!-- right -->
+      </div>
+
+
       <h3> Shadow Texturing</h3>
+      <div class="card-columns">
+        <div class="card-column card-column--pct card-column--leftmost" style="--column-width: 50%;">
 
-      <div class="prose content-card content-card--prose">
-        <p>
+          <div class="prose content-card content-card--prose">
+            <p>
+              My render pipeline a custom shadow mapping implementation that allows for stylized shadows. Determining
+              when a
+              fragment in
+              in shadow is done the conventional way, by rending the scene from the perspective of the light source and
+              writing depth to a texture,
+              then comparing this depth to the shadow depth of the fragment in the main pass. During this process it
+              also
+              samples from a custom texture
+              that allows the shadows to have a stylized appearance per object.
+            </p>
+            <p></p>
+          </div>
 
-        </p>
-        <p></p>
+          <div class="code-card content-card content-card--code">
+            <div class="code-header">
+              <div>
+                <span class="code-language">HLSL</span>
+                <span class="code-label">JFA-Pass.hlsl</span>
+              </div>
+              <div class="code-traffic-lights">
+                <div class="traffic-light red"></div>
+                <div class="traffic-light yellow"></div>
+                <div class="traffic-light green"></div>
+              </div>
+            </div>
+            <div class="code-body">
+<!-- HTML generated using hilite.me --><div overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%;"><span></span><span style="color: #E06C75">vert2frag</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">vert</span><span style="color: #ABB2BF"> (</span><span style="color: #E06C75">Attributes</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">IN</span><span style="color: #ABB2BF">)</span>
+<span style="color: #ABB2BF">{</span>
+<span style="color: #ABB2BF">  </span><span style="color: #7F848E">//...</span>
+
+<span style="color: #ABB2BF">  </span><span style="color: #7F848E">//calculate clip space positions for all lights</span>
+<span style="color: #ABB2BF">  </span><span style="color: #C678DD">for</span><span style="color: #ABB2BF"> (</span><span style="color: #E5C07B">int</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">i</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #D19A66">0</span><span style="color: #ABB2BF">; </span><span style="color: #E06C75">i</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">&lt;</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">MAX_LIGHTS</span><span style="color: #ABB2BF">; </span><span style="color: #E06C75">i</span><span style="color: #56B6C2">++</span><span style="color: #ABB2BF">)</span>
+<span style="color: #ABB2BF">  {</span>
+<span style="color: #ABB2BF">    </span><span style="color: #E5C07B">float4</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">shadowViewPos</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #E5C07B">mul</span><span style="color: #ABB2BF">(</span><span style="color: #E06C75">_ShadowView</span><span style="color: #ABB2BF">[</span><span style="color: #E06C75">i</span><span style="color: #ABB2BF">], </span><span style="color: #E5C07B">float4</span><span style="color: #ABB2BF">(</span><span style="color: #E06C75">output</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">worldPos</span><span style="color: #ABB2BF">, </span><span style="color: #D19A66">1</span><span style="color: #ABB2BF">));</span>
+<span style="color: #ABB2BF">    </span><span style="color: #E06C75">output</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">shadowClipPos</span><span style="color: #ABB2BF">[</span><span style="color: #E06C75">i</span><span style="color: #ABB2BF">] </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #E5C07B">mul</span><span style="color: #ABB2BF">(</span><span style="color: #E06C75">_ShadowProj</span><span style="color: #ABB2BF">[</span><span style="color: #E06C75">i</span><span style="color: #ABB2BF">], </span><span style="color: #E06C75">shadowViewPos</span><span style="color: #ABB2BF">);</span>
+<span style="color: #ABB2BF">  }</span>
+<span style="color: #ABB2BF">  </span><span style="color: #7F848E">//...</span>
+<span style="color: #ABB2BF">}</span>
+
+<span style="color: #E06C75">outputFrag</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">frag</span><span style="color: #ABB2BF"> (</span><span style="color: #E06C75">Varyings</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">IN</span><span style="color: #ABB2BF">)</span>
+<span style="color: #ABB2BF">{</span>
+<span style="color: #ABB2BF">  </span><span style="color: #7F848E">//...</span>
+
+<span style="color: #ABB2BF">  [</span><span style="color: #61AFEF">unroll</span><span style="color: #ABB2BF">(</span><span style="color: #E06C75">MAX_LIGHTS</span><span style="color: #ABB2BF">)]</span>
+<span style="color: #ABB2BF">  </span><span style="color: #C678DD">for</span><span style="color: #ABB2BF"> (</span><span style="color: #E5C07B">int</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">i</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #D19A66">0</span><span style="color: #ABB2BF">; </span><span style="color: #E06C75">i</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">&lt;</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">MAX_LIGHTS</span><span style="color: #ABB2BF">; </span><span style="color: #E06C75">i</span><span style="color: #56B6C2">++</span><span style="color: #ABB2BF">)</span>
+<span style="color: #ABB2BF">  {</span>
+<span style="color: #ABB2BF">    </span><span style="color: #C678DD">if</span><span style="color: #ABB2BF"> (</span><span style="color: #E06C75">_TrashLightBuffer</span><span style="color: #ABB2BF">[</span><span style="color: #E06C75">i</span><span style="color: #ABB2BF">].</span><span style="color: #E06C75">type</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">==</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">NO_LIGHT</span><span style="color: #ABB2BF">) </span><span style="color: #7F848E">// No light</span>
+<span style="color: #ABB2BF">        </span><span style="color: #C678DD">continue</span><span style="color: #ABB2BF">;</span>
+
+<span style="color: #ABB2BF">    </span><span style="color: #7F848E">//get whether this fragment is in shadow for the current light</span>
+<span style="color: #ABB2BF">    </span><span style="color: #E5C07B">float</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">shadow</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">GetShadowValue</span><span style="color: #ABB2BF">(</span><span style="color: #E06C75">IN</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">shadowClipPos</span><span style="color: #ABB2BF">[</span><span style="color: #E06C75">i</span><span style="color: #ABB2BF">], </span><span style="color: #E06C75">i</span><span style="color: #ABB2BF">, (</span><span style="color: #E06C75">fragUV</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">*</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">_MainTex_ST</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">xy</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">+</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">_MainTex_ST</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">zw</span><span style="color: #ABB2BF">), </span><span style="color: #E06C75">_TrashLightBuffer</span><span style="color: #ABB2BF">[</span><span style="color: #E06C75">i</span><span style="color: #ABB2BF">].</span><span style="color: #E06C75">bias</span><span style="color: #ABB2BF">);</span>
+
+<span style="color: #ABB2BF">    </span><span style="color: #7F848E">//skip negative, they indicate unused lights/shadow maps</span>
+<span style="color: #ABB2BF">    </span><span style="color: #C678DD">if</span><span style="color: #ABB2BF"> (</span><span style="color: #E06C75">shadow</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">&lt;</span><span style="color: #ABB2BF"> </span><span style="color: #D19A66">0.0</span><span style="color: #ABB2BF">)</span>
+<span style="color: #ABB2BF">      </span><span style="color: #C678DD">continue</span><span style="color: #ABB2BF">;</span>
+
+<span style="color: #ABB2BF">    </span><span style="color: #7F848E">//get cel shaded lighting value for this light</span>
+<span style="color: #ABB2BF">    </span><span style="color: #E5C07B">float4</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">lightingColor</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">ToonShading</span><span style="color: #ABB2BF">(</span><span style="color: #E06C75">i</span><span style="color: #ABB2BF">, </span><span style="color: #E06C75">IN</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">normalWS</span><span style="color: #ABB2BF">, </span><span style="color: #E06C75">IN</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">worldPos</span><span style="color: #ABB2BF">, </span><span style="color: #E06C75">_WorldSpaceCamPos</span><span style="color: #ABB2BF">, </span><span style="color: #E06C75">_Glossiness</span><span style="color: #ABB2BF">);    </span>
+<span style="color: #ABB2BF">    </span><span style="color: #E5C07B">float</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">shadowTexSample</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">SAMPLE_TEXTURE2D</span><span style="color: #ABB2BF">(</span><span style="color: #E06C75">_ShadowTex</span><span style="color: #ABB2BF">, </span><span style="color: #E06C75">sampler_ShadowTex</span><span style="color: #ABB2BF">, </span><span style="color: #E06C75">fragUV</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">*</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">_ShadowTex_ST</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">xy</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">+</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">_ShadowTex_ST</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">zw</span><span style="color: #ABB2BF">).</span><span style="color: #E06C75">r</span><span style="color: #ABB2BF">;</span>
+
+<span style="color: #ABB2BF">    </span><span style="color: #7F848E">//only darken the pixel if its in shadow and the texture says so</span>
+<span style="color: #ABB2BF">    </span><span style="color: #E06C75">shadow</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #E5C07B">max</span><span style="color: #ABB2BF">(</span><span style="color: #E06C75">shadow</span><span style="color: #ABB2BF">, </span><span style="color: #E06C75">shadowTexSample</span><span style="color: #ABB2BF">);</span>
+
+<span style="color: #ABB2BF">    </span><span style="color: #7F848E">//binarize for sharper edges</span>
+<span style="color: #ABB2BF">    </span><span style="color: #E06C75">shadow</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #E5C07B">step</span><span style="color: #ABB2BF">(</span><span style="color: #D19A66">0.5</span><span style="color: #ABB2BF">, </span><span style="color: #E06C75">shadow</span><span style="color: #ABB2BF">); </span>
+
+<span style="color: #ABB2BF">    </span><span style="color: #7F848E">//apply stylized shadow and light</span>
+<span style="color: #ABB2BF">    </span><span style="color: #E06C75">lightingColor</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">*=</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">shadow</span><span style="color: #ABB2BF">;</span>
+<span style="color: #ABB2BF">    </span><span style="color: #E06C75">finalColor</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">+=</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">lightingColor</span><span style="color: #ABB2BF">;</span>
+<span style="color: #ABB2BF">  }</span>
+
+<span style="color: #ABB2BF">  </span><span style="color: #7F848E">//...</span>
+<span style="color: #ABB2BF">}</span>
+</pre></div>
+
+
+
+            </div>
+            <div class="code-description">
+              <p>JFA Pass incrementally filling in each pixel's closest seed (stencil edge)</p>
+            </div>
+          </div>
+
+        </div> <!-- left -->
+        <div class="card-column card-column--pct card-column--rightmost" style="--column-width: 50%;">
+
+          <div class="code-card content-card content-card--code">
+            <div class="code-header">
+              <div>
+                <span class="code-language">HLSL</span>
+                <span class="code-label">JFA-Pass.hlsl</span>
+              </div>
+              <div class="code-traffic-lights">
+                <div class="traffic-light red"></div>
+                <div class="traffic-light yellow"></div>
+                <div class="traffic-light green"></div>
+              </div>
+            </div>
+            <div class="code-body">
+<!-- HTML generated using hilite.me --><div overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%;"><span></span><span style="color: #E5C07B">float</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">GetShadowValue</span><span style="color: #ABB2BF">(</span><span style="color: #E5C07B">float4</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">shadowClipPos</span><span style="color: #ABB2BF">, </span><span style="color: #E5C07B">int</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">lightIndex</span><span style="color: #ABB2BF">, </span><span style="color: #E5C07B">float2</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">uv</span><span style="color: #ABB2BF">, </span><span style="color: #E5C07B">float</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">bias</span><span style="color: #ABB2BF">)</span>
+<span style="color: #ABB2BF">{</span>
+<span style="color: #ABB2BF">  </span><span style="color: #E5C07B">float3</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">shadowNDC</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">shadowClipPos</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">xyz</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">/</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">shadowClipPos</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">w</span><span style="color: #ABB2BF">;</span>
+<span style="color: #ABB2BF">  </span><span style="color: #E5C07B">float2</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">shadowUV</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">shadowNDC</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">xy</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">*</span><span style="color: #ABB2BF"> </span><span style="color: #D19A66">0.5</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">+</span><span style="color: #ABB2BF"> </span><span style="color: #D19A66">0.5</span><span style="color: #ABB2BF">;</span>
+<span style="color: #ABB2BF">  </span><span style="color: #E06C75">shadowUV</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">y</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #D19A66">1.0</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">-</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">shadowUV</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">y</span><span style="color: #ABB2BF">;</span>
+
+<span style="color: #ABB2BF">  </span><span style="color: #C678DD">if</span><span style="color: #ABB2BF"> (</span><span style="color: #E06C75">shadowUV</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">x</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">&lt;</span><span style="color: #ABB2BF"> </span><span style="color: #D19A66">0</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">||</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">shadowUV</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">x</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">&gt;</span><span style="color: #ABB2BF"> </span><span style="color: #D19A66">1</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">||</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">shadowUV</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">y</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">&lt;</span><span style="color: #ABB2BF"> </span><span style="color: #D19A66">0</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">||</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">shadowUV</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">y</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">&gt;</span><span style="color: #ABB2BF"> </span><span style="color: #D19A66">1</span><span style="color: #ABB2BF">)</span>
+<span style="color: #ABB2BF">      </span><span style="color: #C678DD">return</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">-</span><span style="color: #D19A66">1.0</span><span style="color: #ABB2BF">; </span><span style="color: #7F848E">// Outside shadow map bounds</span>
+
+<span style="color: #ABB2BF">  </span><span style="color: #C678DD">if</span><span style="color: #ABB2BF"> (</span><span style="color: #E06C75">shadowNDC</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">z</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">&lt;</span><span style="color: #ABB2BF"> </span><span style="color: #D19A66">0.0</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">||</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">shadowNDC</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">z</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">&gt;</span><span style="color: #ABB2BF"> </span><span style="color: #D19A66">1.0</span><span style="color: #ABB2BF">)</span>
+<span style="color: #ABB2BF">      </span><span style="color: #C678DD">return</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">-</span><span style="color: #D19A66">1.0</span><span style="color: #ABB2BF">; </span>
+<span style="color: #ABB2BF">  </span>
+<span style="color: #ABB2BF">  </span><span style="color: #E5C07B">float</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">currentDepth</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">shadowNDC</span><span style="color: #ABB2BF">.</span><span style="color: #E06C75">z</span><span style="color: #ABB2BF">;</span>
+<span style="color: #ABB2BF">  </span>
+<span style="color: #ABB2BF">  </span><span style="color: #7F848E">//make sure z is the right way around</span>
+<span style="color: #ABB2BF">  </span><span style="color: #7F848E">#if UNITY_REVERSED_Z</span>
+<span style="color: #ABB2BF">  </span><span style="color: #E5C07B">float</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">biasedDepth</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">currentDepth</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">+</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">bias</span><span style="color: #ABB2BF">;</span>
+<span style="color: #ABB2BF">  </span><span style="color: #7F848E">#else</span>
+<span style="color: #ABB2BF">  </span><span style="color: #E5C07B">float</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">biasedDepth</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">currentDepth</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">-</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">bias</span><span style="color: #ABB2BF">;</span>
+<span style="color: #ABB2BF">  </span><span style="color: #7F848E">#endif</span>
+
+<span style="color: #ABB2BF">  </span><span style="color: #E06C75">shadow</span><span style="color: #ABB2BF"> </span><span style="color: #56B6C2">=</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">SAMPLE_TEXTURE2D_ARRAY_SHADOW</span><span style="color: #ABB2BF">(</span><span style="color: #E06C75">_ShadowMaps</span><span style="color: #ABB2BF">, </span><span style="color: #E06C75">sampler_linear_clamp_compare</span><span style="color: #ABB2BF">, </span><span style="color: #E5C07B">float3</span><span style="color: #ABB2BF">(</span><span style="color: #E06C75">shadowUV</span><span style="color: #ABB2BF">, </span><span style="color: #E06C75">biasedDepth</span><span style="color: #ABB2BF">), </span><span style="color: #E06C75">lightIndex</span><span style="color: #ABB2BF">);</span>
+
+<span style="color: #ABB2BF">  </span><span style="color: #C678DD">return</span><span style="color: #ABB2BF"> </span><span style="color: #E06C75">shadow</span><span style="color: #ABB2BF">;</span>
+<span style="color: #ABB2BF">}</span>
+</pre></div>
+
+
+
+            </div>
+            <div class="code-description">
+              <p>JFA Pass incrementally filling in each pixel's closest seed (stencil edge)</p>
+            </div>
+          </div>
+
+
+          <div class="gallery-card content-card content-card--image">
+            <div class="gallery-card-image">
+              <img src="Images/ShadowDetail.gif">
+            </div>
+            <div class="gallery-card-label">
+              <h3>Final Result</h3>
+              <p>The final image rendered with the Drop shadow effect</p>
+            </div>
+          </div>
+
+        </div> <!-- right -->
       </div>
 
-      <h3> Screenspace texturing</h3>
-      <div class="prose content-card content-card--prose">
-        <p>
-          In a papercraft diorama, all of the pieces of paper, cardboard, etc, are going to be fairly close to the
-          camera and their texture would be visible. They wouldn't look look quite like 3d objects each with their
-          own interactions with light, but rather like flat cutouts of paper stacked together. By sampling
-          textures in screen space instead of the regular UV space, we can make everything look a fair bit flatter.
-        </p>
-        <p></p>
-      </div>
 
-      <div class="gallery-card content-card content-card--image">
-        <div class="gallery-card-image">
-          <img src="Images/Placeholder.png">
-        </div>
-        <div class="gallery-card-label">
-          <h3>Final Result</h3>
-          <p>The final image rendered with the Drop shadow effect</p>
-        </div>
-      </div>
 
       <h3> Drop Shadows</h3>
       <div class="prose content-card content-card--prose">
@@ -1300,11 +1512,14 @@
         <div class="card-column card-column--pct card-column--leftmost" style="--column-width: 55%;">
           <div class="prose content-card content-card--prose">
             <p>
-              The first step in rendering drop shadows is determining where the edges of the objects we want to put them
-              around are, for this I used a stencil buffer, which I set up to render during the main geometry pass. Note
+              The first step in rendering drop shadows is determining where the edges of the objects we want to put
+              them
+              around are, for this I used a stencil buffer, which I set up to render during the main geometry pass.
+              Note
               how each object is a distict stencil value, as well as it's specular highlight getting its own stencil
               value.
-              I did this so taht I could put drop shadows around the hypothetical piece of paper making up the specular
+              I did this so taht I could put drop shadows around the hypothetical piece of paper making up the
+              specular
               highlight
               to help it stand out more.
             </p>
@@ -1440,7 +1655,7 @@
         <div class="card-column card-column--pct card-column--rightmost" style="--column-width: 45%;">
           <div class="gallery-card content-card content-card--image">
             <div class="gallery-card-image">
-              <img src="Images/Placeholder.png">
+              <img src="Images/StencilBufferVis.png">
             </div>
             <div class="gallery-card-label">
               <h3>Stencil Buffer Visualization</h3>
@@ -1515,7 +1730,8 @@
 
           <div class="prose content-card content-card--prose">
             <p>
-              After running the JFA passes, we can get the distance from each pixel to the nearest edge its pointing to,
+              After running the JFA passes, we can get the distance from each pixel to the nearest edge its pointing
+              to,
               adjust this value to have a sharper falloff near the edges, and we have our final drop shadow mask that
               we,
               we can composite with our scene texture to get the final result.
@@ -1525,7 +1741,7 @@
 
           <div class="gallery-card content-card content-card--image">
             <div class="gallery-card-image">
-              <img src="Images/Placeholder.png">
+              <img src="Images/JFAVis.png">
             </div>
             <div class="gallery-card-label">
               <h3>JFA Result</h3>
@@ -1540,7 +1756,10 @@
 
       <div class="gallery-card content-card content-card--image">
         <div class="gallery-card-image">
-          <img src="Images/Placeholder.png">
+          <video autoplay loop muted playsinline preload="metadata" aria-label="Final result video">
+            <source src="Images/FinalOut.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
         </div>
         <div class="gallery-card-label">
           <h3>Final Result</h3>
@@ -1551,7 +1770,7 @@
     </section>
 
     <!-- Gallery Section -->
-    <section class="section">
+    <!-- <section class="section">
       <h2 class="section-title">Gallery</h2>
       <div class="gallery-grid content-card-grid">
         <div class="gallery-card content-card content-card--image">
@@ -1600,7 +1819,7 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
   </main>
 
