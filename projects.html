@@ -269,22 +269,14 @@
       background: var(--red-dim) !important;
     }
 
-    @media (max-width: 680px) {
-      .nav-links {
-        display: none;
-      }
-
-      .nav-icons {
-        display: none;
-      }
-
-      .nav-resume {
-        display: none;
-      }
-
-      .nav-hamburger {
-        display: flex;
-      }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+      .nav-name { font-size: 0; }
+      .nav-name::before { content: "J"; font-size: 2.3rem; color: var(--blue); }
+      .nav-name w {content: "M"; font-size: 2.3rem; }
+      .nav-name span { display: none; }
+      .nav-name::after { content: "L"; font-size: 2.3rem; color: var(--red); margin-left: -0.05em; }
     }
 
     /* ── Header ── */
@@ -786,7 +778,6 @@
     <div class="nav-links">
       <a href="#" class="active">Projects</a>
       <a href="about.html">About</a>
-      <a href="coming-soon.html">Writing</a>
       <a href="contact.html">Contact</a>
     </div>
 
@@ -848,13 +839,6 @@
         <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
       </svg>
       About
-    </a>
-    <a href="coming-soon.html">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-        stroke-linecap="round" stroke-linejoin="round">
-        <path d="M4 6h16M4 12h10M4 18h12" />
-      </svg>
-      Writing
     </a>
     <a href="contact.html">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
