@@ -606,6 +606,63 @@
     .comment {
       color: var(--ink-muted);
     }
+
+    /* ── Jump Buttons ── */
+    .jump-nav {
+      margin-bottom: 48px;
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    .jump-nav--bottom {
+      margin-top: 36px;
+      margin-bottom: 0;
+    }
+
+    .jump-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 20px;
+      border-radius: 999px;
+      border: 1px solid rgba(45, 110, 245, 0.4);
+      background: linear-gradient(135deg, rgba(45, 110, 245, 0.2), rgba(232, 57, 42, 0.2));
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+    }
+
+    .jump-button::after {
+      content: '\2193';
+      font-size: 11px;
+      color: var(--blue);
+      transition: transform 0.2s ease;
+    }
+
+    .jump-button--up::after {
+      content: '\2191';
+      color: var(--red);
+    }
+
+    .jump-button:hover {
+      transform: translateY(-2px);
+      border-color: rgba(45, 110, 245, 0.7);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+    }
+
+    .jump-button:hover::after {
+      transform: translateY(1px);
+    }
+
+    #page-top,
+    #final-stylized-look {
+      scroll-margin-top: 96px;
+    }
   </style>
 </head>
 
@@ -634,7 +691,7 @@
   </nav>
 
   <!-- Main Content -->
-  <main>
+  <main id="page-top">
     <!-- Header Section -->
     <header class="project-header">
       <div class="project-meta">
@@ -659,6 +716,10 @@
         </a>
       </div>
     </header>
+
+    <div class="jump-nav">
+      <a href="#final-stylized-look" class="jump-button">Jump to Final Stylized Look!</a>
+    </div>
 
     <!-- Overview Section -->
     <section class="section">
@@ -876,7 +937,7 @@
     </section>
 
     <!-- Results Section -->
-    <section class="section">
+    <section class="section" id="final-stylized-look">
       <h2 class="section-title">Results & Learnings</h2>
       <div class="prose">
         <p>
@@ -885,6 +946,10 @@
         <p>
           Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, blandit quis, lorem. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         </p>
+      </div>
+
+      <div class="jump-nav jump-nav--bottom">
+        <a href="#page-top" class="jump-button jump-button--up">Back to Top</a>
       </div>
     </section>
 
