@@ -197,12 +197,13 @@
           </div> <!-- end image card-->
         </div> <!-- end left col -->
 
-
-
         <div class="card-column card-column--pct card-column--rightmost" style="--column-width: 50%;">
           <div class="gallery-card content-card content-card--image" , id="impact-frame-final">
             <div class="gallery-card-image">
-              <img src="Images/Placeholder.png">
+              <video autoplay loop muted playsinline preload="metadata" aria-label="Final result video">
+                <source src="Images/PunchNoImpact.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
             </div>
             <div class="gallery-card-label">
               <h3>Punch Without Impact Frame</h3>
@@ -225,7 +226,95 @@
 
       <h3 class="section-subtitle">Character Outlines</h3>
 
+      <div class="card-columns">
+        <div class="card-column card-column--pct card-column--leftmost" style="--column-width: 62%;">
+          <div class="gallery-card content-card content-card--image" , id="impact-frame-final">
+            <div class="gallery-card-image">
+              <img src="Images/M_InverseNormalBaloon.png">
+            </div>
+            <div class="gallery-card-label">
+              <h3>Outline material</h3>
+              <p>All of the math needed to create a dynamic outline of any mesh.</p>
+            </div>
+          </div> <!-- end image card-->
+        </div> <!-- end left col -->
+        <div class="card-column card-column--pct card-column--leftmost" style="--column-width: 38%;">
+          <div class="prose content-card content-card--prose">
+            <p>
+              One of the most common techniques for creating Dynamic outlines around objects is to use a duplicate of
+              the mesh with all of it's normals facing inward and extrude everything outwards. This is what my outline
+              material does, with the added step of flattening the mesh so that multiple outlines could be stacked and
+              moving a few of the vertices out more than the rest to create irregular spikes.
+            </p>
+            <p></p>
+          </div> <!-- end prose -->
+
+          <div class="gallery-card content-card content-card--image" , id="impact-frame-final">
+            <div class="gallery-card-image">
+              <img src="Images/GluncherOutlined.png">
+            </div>
+            <div class="gallery-card-label">
+              <h3>Outlined Enemy</h3>
+              <p>HYPERFIST's "Gluncher" enemy with dynamic outlines.</p>
+            </div>
+          </div> <!-- end image card-->
+        </div> <!-- end right col-->
+      </div> <!-- end columns -->
+
       <h3 class="section-subtitle">Environment Lines &amp; Background</h3>
+
+      <div class="card-columns">
+        <div class="card-column card-column--pct card-column--leftmost" style="--column-width: 50%;">
+          <div class="prose content-card content-card--prose">
+            <p>
+              The next question is what to do with the background enviornment during the impact. The references
+              I was using washed out the background with a single strong color, making the image more striking and
+              less visually complex.
+              I decieded to take a similar approach, washing out the background while keeping outlines of the background
+              elements as to not lose all positional reference, which could be disorienting in a game.
+            </p>
+            <p></p>
+          </div> <!-- end prose -->
+
+          <div class="gallery-card content-card content-card--image" , id="impact-frame-final">
+            <div class="gallery-card-image">
+              <img src="Images/ImpactBackgroundDone.png">
+            </div>
+            <div class="gallery-card-label">
+              <h3>Outlined Enemies with Simplified Background</h3>
+              <p> </p>
+            </div>
+          </div> <!-- end image card-->
+
+        </div> <!-- end left col -->
+        <div class="card-column card-column--pct card-column--leftmost" style="--column-width: 50%;">
+
+          <div class="gallery-card content-card content-card--image" , id="impact-frame-final">
+            <div class="gallery-card-image">
+              <img src="Images/NormalOutlines.png">
+            </div>
+            <div class="gallery-card-label">
+              <h3>Internal Edge Detection</h3>
+              <p>Identifies edges within individual objects by checking for normal vector discontinuities</p>
+            </div>
+          </div> <!-- end image card-->
+
+          <div class="gallery-card content-card content-card--image" , id="impact-frame-final">
+            <div class="gallery-card-image">
+              <img src="Images/DepthOutlines.png">
+            </div>
+            <div class="gallery-card-label">
+              <h3>Object Edge detection</h3>
+              <p>Detects edges between objects by checking for large depth differences between neighbors</p>
+            </div>
+          </div> <!-- end image card-->
+
+        </div> <!-- end right col-->
+      </div> <!-- end columns -->
+
+
+
+
 
       <h3 class="section-subtitle">Final Touches</h3>
 
@@ -306,6 +395,26 @@
     Jack Love
   </footer>
 
+  <!-- Image Lightbox -->
+  <div class="image-lightbox" id="image-lightbox" aria-hidden="true">
+    <div class="image-lightbox-dialog" role="dialog" aria-modal="true" aria-label="Expanded image view">
+      <div class="image-lightbox-toolbar">
+        <div class="image-lightbox-title" id="image-lightbox-title">Image preview</div>
+        <div class="image-lightbox-controls">
+          <button class="image-lightbox-btn" id="image-lightbox-zoom-out" type="button" aria-label="Zoom out">-</button>
+          <button class="image-lightbox-btn" id="image-lightbox-reset" type="button" aria-label="Reset zoom">0</button>
+          <button class="image-lightbox-btn" id="image-lightbox-zoom-in" type="button" aria-label="Zoom in">+</button>
+          <button class="image-lightbox-btn close" id="image-lightbox-close" type="button"
+            aria-label="Close image viewer">x</button>
+        </div>
+      </div>
+      <div class="image-lightbox-stage" id="image-lightbox-stage">
+        <img id="image-lightbox-img" src="" alt="Expanded image" draggable="false">
+        <div class="image-lightbox-hint">Scroll to zoom, drag to pan, Esc to close</div>
+      </div>
+    </div>
+  </div>
+
   <!-- Scripts -->
   <script>
     const btn = document.getElementById('hamburger');
@@ -345,6 +454,235 @@
 
       lastScrollY = currentScrollY;
     }, { passive: true });
+
+    const lightbox = document.getElementById('image-lightbox');
+    const lightboxStage = document.getElementById('image-lightbox-stage');
+    const lightboxImg = document.getElementById('image-lightbox-img');
+    const lightboxTitle = document.getElementById('image-lightbox-title');
+    const zoomInBtn = document.getElementById('image-lightbox-zoom-in');
+    const zoomOutBtn = document.getElementById('image-lightbox-zoom-out');
+    const resetBtn = document.getElementById('image-lightbox-reset');
+    const closeBtn = document.getElementById('image-lightbox-close');
+
+    if (lightbox && lightboxStage && lightboxImg) {
+      const MIN_SCALE = 1;
+      const MAX_SCALE = 6;
+      const ZOOM_STEP = 0.2;
+
+      let isOpen = false;
+      let scale = 1;
+      let offsetX = 0;
+      let offsetY = 0;
+      let activePointerId = null;
+      let dragStartX = 0;
+      let dragStartY = 0;
+      let dragOriginX = 0;
+      let dragOriginY = 0;
+
+      const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+      const getFittedImageSize = () => {
+        const stageRect = lightboxStage.getBoundingClientRect();
+        const naturalWidth = lightboxImg.naturalWidth || 1;
+        const naturalHeight = lightboxImg.naturalHeight || 1;
+        const fitScale = Math.min(stageRect.width / naturalWidth, stageRect.height / naturalHeight);
+
+        return {
+          stageWidth: stageRect.width,
+          stageHeight: stageRect.height,
+          baseWidth: naturalWidth * fitScale,
+          baseHeight: naturalHeight * fitScale
+        };
+      };
+
+      const clampOffsets = () => {
+        const { stageWidth, stageHeight, baseWidth, baseHeight } = getFittedImageSize();
+        const scaledWidth = baseWidth * scale;
+        const scaledHeight = baseHeight * scale;
+
+        const maxX = Math.max((scaledWidth - stageWidth) / 2, 0);
+        const maxY = Math.max((scaledHeight - stageHeight) / 2, 0);
+
+        offsetX = clamp(offsetX, -maxX, maxX);
+        offsetY = clamp(offsetY, -maxY, maxY);
+      };
+
+      const applyTransform = () => {
+        clampOffsets();
+        lightboxImg.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${scale})`;
+        lightboxStage.classList.toggle('is-draggable', scale > MIN_SCALE);
+      };
+
+      const resetView = () => {
+        scale = MIN_SCALE;
+        offsetX = 0;
+        offsetY = 0;
+        applyTransform();
+      };
+
+      const setScaleAtPoint = (newScale, clientX, clientY) => {
+        const targetScale = clamp(newScale, MIN_SCALE, MAX_SCALE);
+
+        if (targetScale === scale) {
+          return;
+        }
+
+        const stageRect = lightboxStage.getBoundingClientRect();
+        const pointX = clientX - stageRect.left - stageRect.width / 2;
+        const pointY = clientY - stageRect.top - stageRect.height / 2;
+
+        offsetX = pointX - ((pointX - offsetX) / scale) * targetScale;
+        offsetY = pointY - ((pointY - offsetY) / scale) * targetScale;
+        scale = targetScale;
+        applyTransform();
+      };
+
+      const openLightbox = (imgEl) => {
+        const card = imgEl.closest('.gallery-card');
+        const cardTitle = card ? card.querySelector('.gallery-card-label h3') : null;
+
+        lightboxImg.src = imgEl.currentSrc || imgEl.src;
+        lightboxImg.alt = imgEl.alt || 'Expanded gallery image';
+        lightboxTitle.textContent = cardTitle ? cardTitle.textContent.trim() : 'Image preview';
+
+        lightbox.classList.add('open');
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('lightbox-open');
+        isOpen = true;
+        resetView();
+      };
+
+      const closeLightbox = () => {
+        if (!isOpen) {
+          return;
+        }
+
+        lightbox.classList.remove('open');
+        lightbox.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('lightbox-open');
+        lightboxImg.src = '';
+        isOpen = false;
+      };
+
+      document.querySelectorAll('.gallery-card-image img').forEach((imgEl) => {
+        imgEl.setAttribute('tabindex', '0');
+        imgEl.setAttribute('role', 'button');
+        imgEl.setAttribute('aria-label', 'Open full-size image');
+
+        imgEl.addEventListener('click', () => {
+          openLightbox(imgEl);
+        });
+
+        imgEl.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            openLightbox(imgEl);
+          }
+        });
+      });
+
+      lightboxImg.addEventListener('load', () => {
+        resetView();
+      });
+
+      lightboxStage.addEventListener('wheel', (event) => {
+        if (!isOpen) {
+          return;
+        }
+
+        event.preventDefault();
+        const direction = event.deltaY < 0 ? 1 : -1;
+        const nextScale = scale + direction * ZOOM_STEP;
+        setScaleAtPoint(nextScale, event.clientX, event.clientY);
+      }, { passive: false });
+
+      lightboxStage.addEventListener('pointerdown', (event) => {
+        if (!isOpen || scale <= MIN_SCALE) {
+          return;
+        }
+
+        activePointerId = event.pointerId;
+        dragStartX = event.clientX;
+        dragStartY = event.clientY;
+        dragOriginX = offsetX;
+        dragOriginY = offsetY;
+        lightboxStage.classList.add('is-dragging');
+        lightboxStage.setPointerCapture(activePointerId);
+      });
+
+      lightboxStage.addEventListener('pointermove', (event) => {
+        if (!isOpen || event.pointerId !== activePointerId) {
+          return;
+        }
+
+        offsetX = dragOriginX + (event.clientX - dragStartX);
+        offsetY = dragOriginY + (event.clientY - dragStartY);
+        applyTransform();
+      });
+
+      const stopDrag = (event) => {
+        if (activePointerId === null || (event && event.pointerId !== activePointerId)) {
+          return;
+        }
+
+        lightboxStage.classList.remove('is-dragging');
+        lightboxStage.releasePointerCapture(activePointerId);
+        activePointerId = null;
+      };
+
+      lightboxStage.addEventListener('pointerup', stopDrag);
+      lightboxStage.addEventListener('pointercancel', stopDrag);
+
+      zoomInBtn.addEventListener('click', () => {
+        const stageRect = lightboxStage.getBoundingClientRect();
+        setScaleAtPoint(scale + ZOOM_STEP, stageRect.left + stageRect.width / 2, stageRect.top + stageRect.height / 2);
+      });
+
+      zoomOutBtn.addEventListener('click', () => {
+        const stageRect = lightboxStage.getBoundingClientRect();
+        setScaleAtPoint(scale - ZOOM_STEP, stageRect.left + stageRect.width / 2, stageRect.top + stageRect.height / 2);
+      });
+
+      resetBtn.addEventListener('click', () => {
+        resetView();
+      });
+
+      closeBtn.addEventListener('click', closeLightbox);
+
+      lightbox.addEventListener('click', (event) => {
+        if (event.target === lightbox) {
+          closeLightbox();
+        }
+      });
+
+      window.addEventListener('keydown', (event) => {
+        if (!isOpen) {
+          return;
+        }
+
+        if (event.key === 'Escape') {
+          closeLightbox();
+          return;
+        }
+
+        if (event.key === '+' || event.key === '=') {
+          const stageRect = lightboxStage.getBoundingClientRect();
+          setScaleAtPoint(scale + ZOOM_STEP, stageRect.left + stageRect.width / 2, stageRect.top + stageRect.height / 2);
+          return;
+        }
+
+        if (event.key === '-') {
+          const stageRect = lightboxStage.getBoundingClientRect();
+          setScaleAtPoint(scale - ZOOM_STEP, stageRect.left + stageRect.width / 2, stageRect.top + stageRect.height / 2);
+        }
+      });
+
+      window.addEventListener('resize', () => {
+        if (isOpen) {
+          applyTransform();
+        }
+      });
+    }
   </script>
 </body>
 
