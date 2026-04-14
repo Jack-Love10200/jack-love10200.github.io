@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Papercraft | Jack Love</title>
+  <title>HYPERFIST | Jack Love</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link
     href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
@@ -136,9 +136,9 @@
       <h1 class="project-title">HYPERFIST - Implementation Highlights</h1>
       <p class="project-description">
         HYPERFIST is a fast-pased first person beat-em-up that I joined halfway through development to help with
-        graphics work.
-        My main contributions on this project were implementing impact frames to enhance the feel of big punches, adding
-        support
+        graphics work. It leans heavily on an over-the-top comic book/cartoon art style, bold colors, sharp silhouettes
+        and exaggerated animations. My main contributions on this project were implementing impact frames to enhance
+        the feel of big punches, adding support
         for steam features (achievements, leaderboards) as well as preparing the game for release on Steam Deck.
       </p>
       <!-- <a href="#" class="tag" target="_blank" rel="noopener">
@@ -157,11 +157,79 @@
     <section class="section">
       <h2 class="section-title">Impact Frames</h2>
 
-      outline objects, baloon material
+      <!-- outline objects, baloon material
       stencil buffer, blueprint glue
-      post process material, signed distance, normal outlines, color
+      post process material, signed distance, normal outlines, color -->
+
+      <h3 class="section-subtitle">Inception &amp; References</h3>
+
+      <div class="card-columns">
+        <div class="card-column card-column--pct card-column--leftmost" style="--column-width: 50%;">
+          <div class="prose content-card content-card--prose">
+            <p>
+              This is what delivering a charged punch looked like before I started on the impact
+              frames. The charge up and punch animations do a lot of work adding engery to the punch, but the actual
+              moment of impact leaves more to be desired.
+            </p>
+            <p></p>
+          </div> <!-- end prose -->
+          <div class="prose content-card content-card--prose">
+            <p>
+              Below are some of the reference images I used while designing and implementing the impact frames. In
+              particular,
+              I had a focus on the jagged outlines around the characters, the rapid, drastic color changes, and idea of
+              a general
+              rough texture.
+            </p>
+            <p></p>
+          </div> <!-- end prose -->
+
+          <div class="gallery-card content-card content-card--image" , id="impact-frame-final">
+            <div class="gallery-card-image">
+              <img src="Images/ImpactStyleGuidePage.png">
+            </div>
+            <div class="gallery-card-label">
+              <h3>Style Guide Impact Frame Page</h3>
+              <p>Quick color change, character outlines. <a class="link"
+                  href="https://www.youtube.com/watch?v=MDErQ1KTzaI" target="_blank" rel="noopener noreferrer">The Music
+                  Video</a></p>
+            </div>
+          </div> <!-- end image card-->
+        </div> <!-- end left col -->
 
 
+
+        <div class="card-column card-column--pct card-column--rightmost" style="--column-width: 50%;">
+          <div class="gallery-card content-card content-card--image" , id="impact-frame-final">
+            <div class="gallery-card-image">
+              <img src="Images/Placeholder.png">
+            </div>
+            <div class="gallery-card-label">
+              <h3>Punch Without Impact Frame</h3>
+              <p>Missing something...</p>
+            </div>
+          </div> <!-- end image card-->
+
+          <div class="gallery-card content-card content-card--image" , id="impact-frame-final">
+            <div class="gallery-card-image">
+              <img src="Images/Arcane_S2E3_Impact.png">
+            </div>
+            <div class="gallery-card-label">
+              <h3>Arcane Season 2 Episode 3</h3>
+              <p>Radial pattern, strong colors, texture.</p>
+            </div>
+          </div> <!-- end image card-->
+
+        </div> <!-- end right col-->
+      </div> <!-- end columns -->
+
+      <h3 class="section-subtitle">Character Outlines</h3>
+
+      <h3 class="section-subtitle">Environment Lines &amp; Background</h3>
+
+      <h3 class="section-subtitle">Final Touches</h3>
+
+      <h3 class="section-subtitle">Final Result</h3>
       <div class="gallery-card content-card content-card--image" , id="impact-frame-final">
         <div class="gallery-card-image">
           <video autoplay loop muted playsinline preload="metadata" aria-label="Final result video">
@@ -175,7 +243,6 @@
           <h3>Final Impact Frame Look</h3>
           <p>Prose here</p>
         </div>
-
       </div>
 
     </section>
