@@ -1226,15 +1226,12 @@ header p {
       }
     }
 
-
-
-
           /* <div class="card-columns">
         <div class="card-column card-column--pct card-column--leftmost" style="--column-width: 50%;">
 
         </div> <!-- end left col -->
 
-        <div class="card-column card-column--pct card-column--leftmost" style="--column-width: 50%;">
+        <div class="card-column card-column--pct card-column--rightmost" style="--column-width: 50%;">
 
         </div> <!-- end right col-->
       </div> <!-- end columns --> */

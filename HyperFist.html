@@ -216,8 +216,8 @@
               <img src="Images/Arcane_S2E3_Impact.png">
             </div>
             <div class="gallery-card-label">
-              <h3>Arcane Season 2 Episode 3</h3>
-              <p>Radial pattern, strong colors, texture.</p>
+              <h3>Arcane Season 2 Episode 3 Intro</h3>
+              <p>Radial pattern, strong colors</p>
             </div>
           </div> <!-- end image card-->
 
@@ -312,11 +312,140 @@
         </div> <!-- end right col-->
       </div> <!-- end columns -->
 
+      <h3 class="section-subtitle">Death Spray</h3>
+      <div class="card-columns">
+        <div class="card-column card-column--pct card-column--leftmost" style="--column-width: 40%;">
+          <div class="prose content-card content-card--prose">
+            <p>
+              This effect was primarily inspired by the death effect in the game "I Am Your Beast", in which
+              a stylies X appears over top of enemies as they are defeated, thought the primary reference materials
+              also use a similar effect.
+            </p>
+            <p></p>
+          </div> <!-- end prose -->
+
+          <div class="gallery-card content-card content-card--image" , id="impact-frame-final">
+            <div class="gallery-card-image">
+              <img src="Images/Placeholder.png">
+            </div>
+            <div class="gallery-card-label">
+              <h3>"I Am Your Beast" Death Effect Inspiration</h3>
+              <p></p>
+            </div>
+          </div> <!-- end image card-->
+
+          <div class="gallery-card content-card content-card--image" , id="impact-frame-final">
+            <div class="gallery-card-image">
+              <img src="Images/Placeholder.png">
+            </div>
+            <div class="gallery-card-label">
+              <h3>Impact frame with death spray</h3>
+              <p></p>
+            </div>
+          </div> <!-- end image card-->
+
+        </div> <!-- end left col -->
+        <div class="card-column card-column--pct card-column--rightmost" style="--column-width: 60%;">
+
+          <div class="prose content-card content-card--prose">
+            <p>
+              HYPERFIST already has a set of spray paint tags strewn throughout walls of the levels. Many of them were
+              perfect to repurpose to go over enemies faces if they were killed during an impact frame.
+            </p>
+            <p></p>
+          </div> <!-- end prose -->
+
+          <div class="gallery-card content-card content-card--image" , id="impact-frame-final">
+            <div class="gallery-card-image">
+              <img src="Images/ImpactInverted.png">
+            </div>
+            <div class="gallery-card-label">
+              <h3>Existing Sprays</h3>
+              <p>Two of the many spray paint tags made for HYPERFIST</p>
+            </div>
+          </div> <!-- end image card-->
+
+          <div class="prose content-card content-card--prose">
+            <p>
+              During an impact, the impact frame manager checks if any of the enemies involved will die from the hit,
+              and if so, spawns a death spray at the position of their skeleton's head socket. Billboarding (rotating
+              to face the camera) this object and giving it a depth offset so that it renders on top of everything else
+              puts it nicely over the enemy's head when they die.
+            </p>
+            <p></p>
+          </div> <!-- end prose -->
+
+        </div> <!-- end right col-->
+      </div> <!-- end columns -->
 
 
+      <h3 class="section-subtitle">Additional Details</h3>
+      <div class="card-columns">
+        <div class="card-column card-column--pct card-column--leftmost" style="--column-width: 50%;">
+          <div class="prose content-card content-card--prose">
+            <p>
+              The shape of the outlines is nice, but they could use more complexity. Hatching lines and halftone
+              dots fit with HYPERFIST's comic style, and break up the silhouette enough to make it a bit more visually
+              interesting. To implement this, I followed the math from
+              <a class="link"
+                href="https://media.gdcvault.com/gdc2024/Slides/GDC+slide+presentations/Tanaka_Kosuke_3D_Toon_Rendering.pdf#page=48"
+                target="_blank">This GDC Presentation on Signed Distance fields in HI-FI Rush</a> and implemented it
+              into a material function.
+            </p>
+            <p></p>
+          </div> <!-- end prose -->
 
+          <div class="gallery-card content-card content-card--image" , id="impact-frame-final">
+            <div class="gallery-card-image">
+              <img src="Images/ImpactFrameWithPaperTexture.png">
+            </div>
+            <div class="gallery-card-label">
+              <h3>Paper Texture Added</h3>
+              <p>Recedes the background and adds texture</p>
+            </div>
+          </div> <!-- end image card-->
 
-      <h3 class="section-subtitle">Final Touches</h3>
+          <div class="prose content-card content-card--prose">
+            <p>
+              At this point, the impact frames look pretty good in terms of shape, but they could be punchier in action.
+              Inverting the colors for the first 3 frames (on ones) of the impact is a technique that added a lot more
+              of
+              a jolt in the references I used, and is super simple to implement as (pure white - original color)^2.
+            </p>
+            <p></p>
+          </div> <!-- end prose -->
+
+        </div> <!-- end left col -->
+        <div class="card-column card-column--pct card-column--rightmost" style="--column-width: 50%;">
+          <div class="gallery-card content-card content-card--image" , id="impact-frame-final">
+            <div class="gallery-card-image">
+              <img src="Images/ImpactWithSignedDistance.png">
+            </div>
+            <div class="gallery-card-label">
+              <h3>Hatching Lines/Halftone Dots Added</h3>
+              <p>Helps break up detail to the silhouette</p>
+            </div>
+          </div> <!-- end image card-->
+
+          <div class="prose content-card content-card--prose">
+            <p>
+              Flat colors don't scream "polish", multiplying paper textures into the outlines and background during the
+              post process step is a simple way to make the whole effect feel more cohesive. Muliplying in different
+              textures/ammounts also serves to seperated the character and outlines from the background more.
+            </p>
+            <p></p>
+          </div> <!-- end prose -->
+          <div class="gallery-card content-card content-card--image" , id="impact-frame-final">
+            <div class="gallery-card-image">
+              <img src="Images/ImpactInverted.png">
+            </div>
+            <div class="gallery-card-label">
+              <h3>Inverted Colors</h3>
+              <p>Adding an extra jolt to the impact frames</p>
+            </div>
+          </div> <!-- end image card-->
+        </div> <!-- end right col-->
+      </div> <!-- end columns -->
 
       <h3 class="section-subtitle">Final Result</h3>
       <div class="gallery-card content-card content-card--image" , id="impact-frame-final">
